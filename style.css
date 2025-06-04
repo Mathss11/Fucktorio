@@ -119,3 +119,35 @@ button:hover {
     height: 30px;
     filter: drop-shadow(0 0 4px #888);
 }
+.four-zone {
+    background: #39362a;
+    border-radius: 18px;
+    padding: 18px 14px;
+    margin-top: 28px;
+    box-shadow: 0 2px 8px #0004;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 180px;
+}
+
+.four-zone .inv-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 6px #888);
+}
+
+.four-section {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1em;
+}
+
+.four-zone strong {
+    margin-bottom: 8px;
+    display: block;
+    font-size: 1.13em;
+}
