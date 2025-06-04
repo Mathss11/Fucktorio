@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Ajout des image, arbre filon et icone site">
+    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Ajout du bouton automatique mais pas encore code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fucktorio.html" beforeDir="false" afterPath="$PROJECT_DIR$/Fucktorio.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +83,7 @@
       <updated>1749040313598</updated>
       <workItem from="1749040314765" duration="73000" />
       <workItem from="1749040889033" duration="338000" />
-      <workItem from="1749042520314" duration="730000" />
+      <workItem from="1749042520314" duration="2205000" />
     </task>
     <task id="LOCAL-00001" summary="Base">
       <option name="closed" value="true" />
@@ -100,7 +101,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749042766060</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Ajout du bouton automatique mais pas encore code">
+      <option name="closed" value="true" />
+      <created>1749043311350</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1749043311350</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,6 +129,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Base" />
     <MESSAGE value="Ajout des image, arbre filon et icone site" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout des image, arbre filon et icone site" />
+    <MESSAGE value="Ajout du bouton automatique mais pas encore code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout du bouton automatique mais pas encore code" />
   </component>
 </project>
