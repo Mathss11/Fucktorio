@@ -1,12 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Industricraft - Début</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<h1>Industricraft</h1>
+<div class="ressources">
+    <div class="ressource">
+        <img src="https://cdn.pixabay.com/photo/2013/07/13/11/47/tree-158730_1280.png" alt="Arbre" class="icon">
+        <button onclick="ajouterBois()">Couper du bois</button>
+        <span id="bois">0</span> bois
+    </div>
+    <div class="ressource">
+        <img src="https://cdn.pixabay.com/photo/2014/04/03/00/35/rock-311379_1280.png" alt="Rocher" class="icon">
+        <button onclick="ajouterPierre()">Casser de la pierre</button>
+        <span id="pierre">0</span> pierre
+    </div>
+</div>
 
-    <script type="text/javascript" src="main.js"></script>
+<script>
+    let nbBois = 0;
+    let nbPierre = 0;
+
+    function ajouterBois() {
+        nbBois++;
+        document.getElementById("bois").textContent = nbBois;
+    }
+
+    function ajouterPierre() {
+        nbPierre++;
+        document.getElementById("pierre").textContent = nbPierre;
+    }
+</script>
 </body>
 </html>
