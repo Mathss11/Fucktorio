@@ -98,6 +98,31 @@
       <option name="project" value="LOCAL" />
       <updated>1749042380652</updated>
     </task>
+    <task id="LOCAL-00002" summary="Ajout des image, arbre filon et icone site">
+      <option name="closed" value="true" />
+      <created>1749042766060</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749042766060</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Ajout du bouton automatique mais pas encore code">
+      <option name="closed" value="true" />
+      <created>1749043311350</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1749043311350</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Visu">
+      <option name="closed" value="true" />
+      <created>1749044793532</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1749044793532</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

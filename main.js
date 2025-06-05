@@ -39,7 +39,6 @@ function ajouterBois() {
         });
 }
 
-
 function ajouterPierre() {
     fetch("http://localhost:8080/API/ajouter/Pierre", {
         method: "POST"
