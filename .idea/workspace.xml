@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Visu">
+    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fucktorio.html" beforeDir="false" afterPath="$PROJECT_DIR$/Fucktorio.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
     </list>
@@ -22,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="d0681f49e70770989276c9e152b9fb74a5387e45" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -30,12 +36,12 @@
     &quot;assignee&quot;: &quot;kukoji&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Mathss11/Fucktorio.git",
-    "accountId": "ab579899-3d18-40b9-aa59-64d3d4b135ea"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Mathss11/Fucktorio.git&quot;,
+    &quot;accountId&quot;: &quot;312da64b-6b2c-4a15-90f1-dbb7aa10cb19&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -50,8 +56,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "junie.onboarding.icon.badge.shown": "true",
+    "git-widget-placeholder": "branche-BGT",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -82,41 +87,7 @@
       <updated>1749040313598</updated>
       <workItem from="1749040314765" duration="73000" />
       <workItem from="1749040889033" duration="338000" />
-      <workItem from="1749042520314" duration="2611000" />
     </task>
-    <task id="LOCAL-00001" summary="Base">
-      <option name="closed" value="true" />
-      <created>1749042380652</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1749042380652</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Ajout des image, arbre filon et icone site">
-      <option name="closed" value="true" />
-      <created>1749042766060</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1749042766060</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Ajout du bouton automatique mais pas encore code">
-      <option name="closed" value="true" />
-      <created>1749043311350</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1749043311350</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Visu">
-      <option name="closed" value="true" />
-      <created>1749044793532</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1749044793532</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,12 +103,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Base" />
-    <MESSAGE value="Ajout des image, arbre filon et icone site" />
-    <MESSAGE value="Ajout du bouton automatique mais pas encore code" />
-    <MESSAGE value="Visu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visu" />
   </component>
 </project>

@@ -1,27 +1,29 @@
-let nbBois = 0;
-let nbPierre = 0;
-let nbCarburant = 0;
-let nbRessourceFour = 0;
+let linkMettreAJourAffichageButton =  document.getElementById("mettreAJourAffichageButton");
+let linkMinerCharbonButton =  document.getElementById("minerCharbonButton");
+let linkAffichageCharbonSpan =  document.getElementById("affichageCharbonSpan");
 
+var charbon = 0;
 
-function ajouterBois() {
-    nbBois++;
-    document.getElementById("bois").textContent = nbBois;
+function main() {
+    linkMettreAJourAffichageButton.addEventListener("click", () => {
+        miseAJourAffichage();
+    })
+    linkMinerCharbonButton.addEventListener("click", () => {
+        minerCharbon();
+    })
 }
 
-function ajouterPierre() {
-    nbPierre++;
-    document.getElementById("pierre").textContent = nbPierre;
+function miseAJourAffichage() {
+    if (charbon > 0) {
+        linkAffichageCharbonSpan.style = "";
+        linkAffichageCharbonSpan.innerHTML = "Charbon x" + charbon;
+    } else {
+        linkAffichageCharbonSpan.style = "display:none;";
+    }
 }
 
-function modifierCarburant(val) {
-    nbCarburant += val;
-    if (nbCarburant < 0) nbCarburant = 0;
-    document.getElementById("carburant").textContent = nbCarburant;
+function minerCharbon() {
+    charbon++;
 }
 
-function modifierRessourceFour(val) {
-    nbRessourceFour += val;
-    if (nbRessourceFour < 0) nbRessourceFour = 0;
-    document.getElementById("ressourceFour").textContent = nbRessourceFour;
-}
+main();
