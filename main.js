@@ -22,6 +22,10 @@ function miseAJourAffichage() {
     }
 }
 
+function appelsBaseDeDonnees() {
+
+}
+
 function minerCharbon() {
     charbon++;
 }
