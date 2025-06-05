@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
-    </list>
+    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Plein de chose" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,6 +152,7 @@
     <MESSAGE value="Ajout des image, arbre filon et icone site" />
     <MESSAGE value="Ajout du bouton automatique mais pas encore code" />
     <MESSAGE value="Visu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visu" />
+    <MESSAGE value="Plein de chose" />
+    <option name="LAST_COMMIT_MESSAGE" value="Plein de chose" />
   </component>
 </project>
