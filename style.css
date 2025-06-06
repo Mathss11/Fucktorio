@@ -211,4 +211,31 @@ button:hover {
         top: 0;
     }
 }
+#energie-barre {
+    position: fixed;
+    top: 26px;
+    right: 34px;
+    background: rgba(40, 44, 60, 0.80);
+    border-radius: 14px;
+    padding: 10px 24px 10px 16px;
+    box-shadow: 0 4px 18px #0007;
+    display: flex;
+    align-items: center;
+    z-index: 200;
+    font-size: 1.23em;
+}
+
+#energie-logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    filter: drop-shadow(0 0 8px #ffd600);
+}
+
+#energie-valeur {
+    font-weight: bold;
+    color: #ffd600;
+    letter-spacing: 1px;
+    font-size: 1.1em;
+}
 
