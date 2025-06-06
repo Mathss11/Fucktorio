@@ -259,7 +259,7 @@ button:hover {
     filter: drop-shadow(0 0 10px #ffd600cc);
 }
 
-#energie-valeur {
+#energie-dispo,#energie-total {
     font-weight: 700;
     color: #ffd600;
     letter-spacing: 1.2px;
