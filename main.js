@@ -21,7 +21,7 @@ function reloadInventaire() {
 }
 
 function ajouterBois() {
-    fetch("http://localhost:8080/API/ajouter/Bois", {
+    fetch("http://localhost:8080/API/ajouter/ressource/Bois", {
         method: "POST"
     })
         .then(response => response.text())
@@ -40,7 +40,7 @@ function ajouterBois() {
 }
 
 function ajouterPierre() {
-    fetch("http://localhost:8080/API/ajouter/Pierre", {
+    fetch("http://localhost:8080/API/ajouter/ressource/Pierre", {
         method: "POST"
     })
         .then(response => response.text())

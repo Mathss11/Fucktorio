@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Plein de chose">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fucktorio.html" beforeDir="false" afterPath="$PROJECT_DIR$/Fucktorio.html" afterDir="false" />
-    </list>
+    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="energie" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749200004919</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="energie">
+      <option name="closed" value="true" />
+      <created>1749219564455</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749219564455</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,6 +178,7 @@
     <MESSAGE value="Visu" />
     <MESSAGE value="Plein de chose" />
     <MESSAGE value="Quelque modif" />
-    <option name="LAST_COMMIT_MESSAGE" value="Quelque modif" />
+    <MESSAGE value="energie" />
+    <option name="LAST_COMMIT_MESSAGE" value="energie" />
   </component>
 </project>
