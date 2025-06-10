@@ -137,6 +137,46 @@ h1 {
     scrollbar-width: thin;
     scrollbar-color: #393939 #232323;
 }
+/* ======================= */
+/* FOUR ZONE         */
+/* ======================= */
+
+.four-zone {
+    background: rgba(70, 65, 42, 0.90);
+    border-radius: 20px;
+    padding: 20px 18px;
+    margin-top: 36px;
+    box-shadow: 0 2px 20px #0005;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 180px;
+    border: 1.2px solid #857b57bb;
+}
+
+.four-zone .inv-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 7px;
+    filter: drop-shadow(0 0 8px #aa8);
+}
+
+.four-section {
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.four-zone strong {
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.18em;
+    color: #ffe38b;
+    font-weight: 600;
+}
 
 /* ======================= */
 /*        RESSOURCES       */

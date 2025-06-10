@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Four implenetation 2 entree">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fucktorio.html" beforeDir="false" afterPath="$PROJECT_DIR$/Fucktorio.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
-    </list>
+    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Plein de chose" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,7 +85,7 @@
       <workItem from="1749040314765" duration="73000" />
       <workItem from="1749040889033" duration="338000" />
       <workItem from="1749042520314" duration="2611000" />
-      <workItem from="1749539943331" duration="15818000" />
+      <workItem from="1749539943331" duration="16127000" />
     </task>
     <task id="LOCAL-00001" summary="Base">
       <option name="closed" value="true" />
@@ -195,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749564391297</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Plein de chose">
+      <option name="closed" value="true" />
+      <created>1749565077993</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1749565077994</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,7 +248,6 @@
     <MESSAGE value="Ajout des image, arbre filon et icone site" />
     <MESSAGE value="Ajout du bouton automatique mais pas encore code" />
     <MESSAGE value="Visu" />
-    <MESSAGE value="Plein de chose" />
     <MESSAGE value="Quelque modif" />
     <MESSAGE value="energie" />
     <MESSAGE value="Mise a jour de l'inventaire, ajout de toute les ressource possible" />
@@ -252,6 +255,7 @@
     <MESSAGE value="image inventaire etc..." />
     <MESSAGE value="Four plus fonctionnement" />
     <MESSAGE value="Four implenetation 2 entree" />
-    <option name="LAST_COMMIT_MESSAGE" value="Four implenetation 2 entree" />
+    <MESSAGE value="Plein de chose" />
+    <option name="LAST_COMMIT_MESSAGE" value="Plein de chose" />
   </component>
 </project>
