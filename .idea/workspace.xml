@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="Mise a jour de l'inventaire, ajout du scroll sur l'inventaire">
+    <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="image inventaire etc...">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fucktorio.html" beforeDir="false" afterPath="$PROJECT_DIR$/Fucktorio.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +89,7 @@
       <workItem from="1749040314765" duration="73000" />
       <workItem from="1749040889033" duration="338000" />
       <workItem from="1749042520314" duration="2611000" />
-      <workItem from="1749539943331" duration="8021000" />
+      <workItem from="1749539943331" duration="12000000" />
     </task>
     <task id="LOCAL-00001" summary="Base">
       <option name="closed" value="true" />
@@ -172,13 +171,36 @@
       <option name="project" value="LOCAL" />
       <updated>1749222619757</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="image inventaire etc...">
+      <option name="closed" value="true" />
+      <created>1749549517919</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1749549517920</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -189,7 +211,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="Branche-perso" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
@@ -211,6 +233,7 @@
     <MESSAGE value="energie" />
     <MESSAGE value="Mise a jour de l'inventaire, ajout de toute les ressource possible" />
     <MESSAGE value="Mise a jour de l'inventaire, ajout du scroll sur l'inventaire" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mise a jour de l'inventaire, ajout du scroll sur l'inventaire" />
+    <MESSAGE value="image inventaire etc..." />
+    <option name="LAST_COMMIT_MESSAGE" value="image inventaire etc..." />
   </component>
 </project>

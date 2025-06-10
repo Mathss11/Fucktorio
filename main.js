@@ -170,14 +170,60 @@ function ajouterPierre() {
 }
 
 
-function modifierCarburant(val) {
-    nbCarburant += val;
-    if (nbCarburant < 0) nbCarburant = 0;
-    document.getElementById("carburant").textContent = nbCarburant;
+// --- Variables Globales pour le Four ---
+let ressourceFourSelectionnee = "Bois";
+let nbRessourceFour = 0;
+
+// --- Fonctions Spécifiques au Four ---
+function changerRessourceFour() {
+    const selectElement = document.getElementById("selectRessourceFour");
+    ressourceFourSelectionnee = selectElement.value;
+    nbRessourceFour = 0;
+    document.getElementById("ressourceFour").textContent = nbRessourceFour;
 }
 
 function modifierRessourceFour(val) {
     nbRessourceFour += val;
-    if (nbRessourceFour < 0) nbRessourceFour = 0;
+    if (nbRessourceFour < 0) {
+        nbRessourceFour = 0;
+    }
     document.getElementById("ressourceFour").textContent = nbRessourceFour;
+}
+
+function lancerCuisson() {
+    if (nbRessourceFour <= 0) {
+        alert("Veuillez sélectionner une quantité de ressource à cuire.");
+        return;
+    }
+
+    console.log(`Lancement de la cuisson de ${nbRessourceFour} de ${ressourceFourSelectionnee}.`);
+
+    const url = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(ressourceFourSelectionnee)}/${nbRessourceFour}`;
+
+    fetch(url, {
+        method: "GET"
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Erreur du serveur (${response.status}) : ${text}`);
+                });
+            }
+            return response.text();
+        })
+        .then(data => {
+            alert(`Cuisson de ${nbRessourceFour} ${ressourceFourSelectionnee} lancée avec succès ! Réponse : ${data}`);
+
+            // Réinitialise la quantité à cuire dans le four après le succès.
+            nbRessourceFour = 0;
+            document.getElementById("ressourceFour").textContent = nbRessourceFour;
+
+            // --- Appel de la fonction de rechargement de l'inventaire ---
+            // C'est ici que l'inventaire est rafraîchi pour refléter la consommation des ressources.
+            reloadInventaire();
+        })
+        .catch(error => {
+            alert(`Échec de la cuisson : ${error.message}`);
+            console.error('Détails de l\'erreur de cuisson :', error);
+        });
 }
