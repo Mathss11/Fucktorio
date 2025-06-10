@@ -171,15 +171,39 @@ function ajouterPierre() {
 
 
 // --- Variables Globales pour le Four ---
-let ressourceFourSelectionnee = "Bois";
-let nbRessourceFour = 0;
+let ressourceFourSelectionnee1 = "Bois"; // Première ressource choisie
+let ressourceFourSelectionnee2 = null;   // Seconde ressource choisie (null par défaut)
+let nbRessourceFour = 0;                 // Quantité à "crafter"
 
-// --- Fonctions Spécifiques au Four ---
+// --- Fonctions du Four ---
+
+// Gère le changement de la PREMIÈRE ressource (selectRessourceFour1)
 function changerRessourceFour() {
-    const selectElement = document.getElementById("selectRessourceFour");
-    ressourceFourSelectionnee = selectElement.value;
+    const selectElement1 = document.getElementById("selectRessourceFour1");
+    const selectElement2 = document.getElementById("selectRessourceFour2");
+
+    ressourceFourSelectionnee1 = selectElement1.value;
+
+    // Logique pour afficher/cacher la seconde liste déroulante
+    if (ressourceFourSelectionnee1 === "Lingot de Fer") {
+        selectElement2.style.display = "inline-block"; // Affiche la seconde liste
+        // On initialise la deuxième ressource sur "Charbon" si elle est visible
+        ressourceFourSelectionnee2 = selectElement2.value;
+    } else {
+        selectElement2.style.display = "none"; // Cache la seconde liste
+        ressourceFourSelectionnee2 = null; // Réinitialise la seconde ressource
+    }
+
+    // Réinitialise la quantité et l'affichage quand la première ressource change
     nbRessourceFour = 0;
     document.getElementById("ressourceFour").textContent = nbRessourceFour;
+}
+
+// Gère le changement de la SECONDE ressource (selectRessourceFour2)
+function changerRessourceFour2() {
+    const selectElement2 = document.getElementById("selectRessourceFour2");
+    ressourceFourSelectionnee2 = selectElement2.value;
+    // On ne réinitialise pas la quantité ici, elle est liée au craft en cours.
 }
 
 function modifierRessourceFour(val) {
@@ -190,18 +214,34 @@ function modifierRessourceFour(val) {
     document.getElementById("ressourceFour").textContent = nbRessourceFour;
 }
 
+// Lance le processus de cuisson/crafting
 function lancerCuisson() {
     if (nbRessourceFour <= 0) {
-        alert("Veuillez sélectionner une quantité de ressource à cuire.");
+        alert("Veuillez sélectionner une quantité à crafter.");
         return;
     }
 
-    console.log(`Lancement de la cuisson de ${nbRessourceFour} de ${ressourceFourSelectionnee}.`);
+    let urlAPI;
+    let nomRessource1 = encodeURIComponent(ressourceFourSelectionnee1);
+    let nomRessource2 = ressourceFourSelectionnee2 ? encodeURIComponent(ressourceFourSelectionnee2) : null;
+    let nombreDeCraft = nbRessourceFour;
 
-    const url = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(ressourceFourSelectionnee)}/${nbRessourceFour}`;
+    // Vérifie si c'est un craft à double entrée (Lingot de Fer + Charbon)
+    if (ressourceFourSelectionnee1 === "Lingot de Fer" && ressourceFourSelectionnee2 === "Charbon") {
+        // Appelle le nouvel endpoint pour les deux ressources
+        // Il est crucial que votre API gère les deux ressources dans cet ordre ou de manière agnostique
+        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nomRessource2}/${nombreDeCraft}`;
+        // Note: Vous devrez créer cet endpoint dans votre Spring Boot !
+        // @GetMapping("/utiliserFourDoubleEntree/{ressource1}/{ressource2}/{nombreDeCraft}")
+    } else {
+        // Sinon, c'est un craft simple comme avant
+        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nombreDeCraft}`;
+    }
 
-    fetch(url, {
-        method: "GET"
+    console.log(`Lancement du four avec URL : ${urlAPI}`);
+
+    fetch(urlAPI, {
+        method: "GET" // Reste en GET selon votre API
     })
         .then(response => {
             if (!response.ok) {
@@ -212,18 +252,14 @@ function lancerCuisson() {
             return response.text();
         })
         .then(data => {
-            alert(`Cuisson de ${nbRessourceFour} ${ressourceFourSelectionnee} lancée avec succès ! Réponse : ${data}`);
-
-            // Réinitialise la quantité à cuire dans le four après le succès.
+            alert(`Craft lancé avec succès ! Réponse : ${data}`);
             nbRessourceFour = 0;
             document.getElementById("ressourceFour").textContent = nbRessourceFour;
-
-            // --- Appel de la fonction de rechargement de l'inventaire ---
-            // C'est ici que l'inventaire est rafraîchi pour refléter la consommation des ressources.
-            reloadInventaire();
+            // Recharger l'inventaire pour refléter la consommation et la production
+            reloadInventaire(); // Assurez-vous que cette fonction existe
         })
         .catch(error => {
-            alert(`Échec de la cuisson : ${error.message}`);
-            console.error('Détails de l\'erreur de cuisson :', error);
+            alert(`Échec du craft : ${error.message}`);
+            console.error('Détails de l\'erreur de craft :', error);
         });
 }
