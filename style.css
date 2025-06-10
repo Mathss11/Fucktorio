@@ -45,11 +45,12 @@ h1 {
 /* ======================= */
 
 .inventaire {
-    max-height: 400px;           /* Hauteur max de la case inventaire */
-    width: 320px;                /* Largeur de la case inventaire */
-    overflow-y: auto;            /* Active la barre de scroll verticale si besoin */
+    /* NE PAS METTRE position: fixed ni sticky ni absolute */
+    max-height: 400px;
+    width: 320px;
+    overflow-y: auto;
     overflow-x: hidden;
-    direction: rtl;              /* Barre de scroll à gauche */
+    direction: rtl;
     border: 2px solid #333;
     padding: 12px;
     background: #1a1a1a;
@@ -57,19 +58,16 @@ h1 {
     color: #f0f0f0;
     box-sizing: border-box;
     box-shadow: 0 4px 24px #0005;
-    margin: 20px auto;           /* Centré avec un peu d’espace autour, à adapter */
+    margin: 20px auto;
 }
-
 .inventaire > * {
-    direction: ltr;              /* Remet le texte à l’endroit pour les enfants */
+    direction: ltr;
 }
-
 .inventaire h2 {
     margin-top: 0;
     text-align: center;
     letter-spacing: 2px;
 }
-
 .item-stock {
     display: flex;
     align-items: center;
@@ -77,7 +75,6 @@ h1 {
     margin: 10px 0;
     font-size: 18px;
 }
-
 .inv-icon {
     width: 36px;
     height: 36px;
@@ -86,7 +83,6 @@ h1 {
     background: #222;
     object-fit: cover;
 }
-
 .sacado {
     display: block;
     margin: 0 auto 12px auto;
@@ -94,27 +90,23 @@ h1 {
     border-radius: 50%;
     box-shadow: 0 2px 12px #0004;
 }
-
-/* (Facultatif) Personnalisation de la barre de scroll (Chrome, Edge, Safari) */
+/* Scrollbar style optionnel */
 .inventaire::-webkit-scrollbar {
     width: 12px;
 }
-
 .inventaire::-webkit-scrollbar-thumb {
     background: #393939;
     border-radius: 8px;
 }
-
 .inventaire::-webkit-scrollbar-track {
     background: #232323;
     border-radius: 8px;
 }
-
-/* Pour Firefox */
 .inventaire {
     scrollbar-width: thin;
     scrollbar-color: #393939 #232323;
 }
+
 
 
 
@@ -167,8 +159,9 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 46px;
-    margin-left: 315px; /* offset for inventory */
+    margin-left: 0; /* remet à zéro */
 }
+
 
 .ressource {
     background: rgba(40, 46, 60, 0.96);
