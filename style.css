@@ -24,7 +24,7 @@ h1 {
 }
 
 /* ======================= */
-/*     MAIN LAYOUT         */
+/* MAIN LAYOUT         */
 /* ======================= */
 
 .main-container {
@@ -32,20 +32,30 @@ h1 {
     justify-content: center;
     align-items: flex-start;
     gap: 64px;
+    /* Ajustement important : Ajoutez une marge gauche pour laisser de la place à l'inventaire fixe */
     margin-top: 56px;
     width: 100%;
     max-width: 1400px;
-    margin-left: auto;
+    margin-left: auto; /* Sera ajusté plus bas pour compenser l'inventaire */
     margin-right: auto;
     padding-bottom: 64px;
+    /* Ajouter un padding-left pour créer un espace sur la gauche pour l'inventaire fixe */
+    padding-left: 360px; /* Largeur inventaire (320px) + marge (40px) */
+    box-sizing: border-box; /* Pour que le padding ne s'ajoute pas à la largeur totale */
 }
 
 /* ======================= */
-/*    INVENTAIRE FIXE      */
+/* INVENTAIRE FIXE      */
 /* ======================= */
 
 .inventaire {
-    /* NE PAS METTRE position: fixed ni sticky ni absolute */
+    /* Propriétés pour rendre l'inventaire fixe */
+    position: fixed; /* Rend l'élément fixe par rapport à la fenêtre de visualisation */
+    top: 20px; /* Positionne l'inventaire à 20px du haut de la page */
+    left: 20px; /* Positionne l'inventaire à 20px de la gauche de la page */
+    z-index: 100; /* Assure que l'inventaire est au-dessus d'autres éléments s'ils se chevauchent */
+
+    /* Vos propriétés existantes pour l'inventaire */
     max-height: 400px;
     width: 320px;
     overflow-y: auto;
@@ -58,15 +68,36 @@ h1 {
     color: #f0f0f0;
     box-sizing: border-box;
     box-shadow: 0 4px 24px #0005;
-    margin: 20px auto;
+    /* Supprimer les marges automatiques qui sont incompatibles avec position: fixed */
+    /* margin: 20px auto; <= Supprimez ou commentez cette ligne */
 }
+/* Le reste du CSS de .inventaire et de ses enfants reste inchangé */
 .inventaire > * {
     direction: ltr;
 }
-.inventaire h2 {
+.inventaire-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 0;
+    margin-bottom: 12px;
+    position: relative;
+}
+.inventaire h2 {
+    margin: 0;
     text-align: center;
     letter-spacing: 2px;
+    white-space: nowrap;
+}
+.reload-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+.reload-icon:hover {
+    transform: rotate(30deg) scale(1.1);
 }
 .item-stock {
     display: flex;
@@ -105,50 +136,6 @@ h1 {
 .inventaire {
     scrollbar-width: thin;
     scrollbar-color: #393939 #232323;
-}
-
-
-
-
-/* ======================= */
-/*       FOUR ZONE         */
-/* ======================= */
-
-.four-zone {
-    background: rgba(70, 65, 42, 0.90);
-    border-radius: 20px;
-    padding: 20px 18px;
-    margin-top: 36px;
-    box-shadow: 0 2px 20px #0005;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 180px;
-    border: 1.2px solid #857b57bb;
-}
-
-.four-zone .inv-icon {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 7px;
-    filter: drop-shadow(0 0 8px #aa8);
-}
-
-.four-section {
-    margin: 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1em;
-    font-weight: 500;
-}
-
-.four-zone strong {
-    margin-bottom: 10px;
-    display: block;
-    font-size: 1.18em;
-    color: #ffe38b;
-    font-weight: 600;
 }
 
 /* ======================= */
@@ -263,7 +250,7 @@ button:hover {
 }
 
 /* ======================= */
-/*      RESPONSIVE         */
+/* RESPONSIVE         */
 /* ======================= */
 
 @media (max-width: 900px) {
@@ -272,6 +259,8 @@ button:hover {
         align-items: center;
         gap: 36px;
         margin-top: 120px;
+        /* Réinitialiser le padding-left pour les écrans plus petits */
+        padding-left: 0;
     }
     .ressources {
         margin-left: 0;
@@ -279,11 +268,13 @@ button:hover {
         gap: 36px;
     }
     .inventaire {
-        position: static;
+        /* Important : annuler la position fixed pour les petits écrans */
+        position: static; /* Ou position: relative; */
         margin: 32px auto 0 auto;
         max-width: 350px;
-        left: 0;
-        top: 0;
+        left: auto; /* Réinitialiser la propriété left */
+        top: auto;  /* Réinitialiser la propriété top */
+        z-index: auto; /* Réinitialiser le z-index */
     }
     #energie-barre {
         position: static;
@@ -291,21 +282,6 @@ button:hover {
         width: fit-content;
         display: flex;
         justify-content: center;
-    }
-}
-
-@media (max-width: 600px) {
-    body {
-        font-size: 15px;
-    }
-    .main-container,
-    .ressources {
-        padding: 0 6px;
-    }
-    .inventaire {
-        min-width: 90vw;
-        max-width: 98vw;
-        padding: 16px 8px;
     }
 }
 
