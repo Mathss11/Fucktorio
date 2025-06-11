@@ -1,5 +1,5 @@
 /* ======================= */
-/* BASE STYLES (DU JEU PRINCIPAL) */
+/* BASE STYLES (DU JEU PRINCIPAL) - INCHANGÉS */
 /* ======================= */
 
 body {
@@ -12,8 +12,6 @@ body {
     letter-spacing: 0.1px;
     font-size: 17px;
     overflow-x: hidden; /* Empêche le défilement horizontal non désiré du body */
-    /* Remove overflow: hidden; from the builder's body style */
-    /* position: relative; (du builder, pas nécessaire ici, le body est déjà le conteneur) */
 }
 
 /* TITRES */
@@ -27,7 +25,7 @@ h1 {
 }
 
 /* ======================= */
-/* MAIN LAYOUT (DU JEU PRINCIPAL) */
+/* MAIN LAYOUT (DU JEU PRINCIPAL) - INCHANGÉS */
 /* ======================= */
 
 .page-content-wrapper {
@@ -54,7 +52,7 @@ h1 {
 }
 
 /* ======================= */
-/* INVENTAIRE FIXE (DU JEU PRINCIPAL)      */
+/* INVENTAIRE FIXE (DU JEU PRINCIPAL) - INCHANGÉS      */
 /* ======================= */
 
 .inventaire {
@@ -75,7 +73,6 @@ h1 {
     color: #f0f0f0;
     box-sizing: border-box;
     box-shadow: 0 4px 24px #0005;
-    /* margin: 20px auto; <= Supprimé précédemment */
 }
 .inventaire > * {
     direction: ltr;
@@ -143,7 +140,7 @@ h1 {
 }
 
 /* ======================= */
-/* FOUR ZONE (DU JEU PRINCIPAL)         */
+/* FOUR ZONE (DU JEU PRINCIPAL) - INCHANGÉS         */
 /* ======================= */
 
 .four-zone {
@@ -184,14 +181,14 @@ h1 {
 }
 
 /* ======================= */
-/* RESSOURCES (DU JEU PRINCIPAL)       */
+/* RESSOURCES (DU JEU PRINCIPAL) - INCHANGÉS       */
 /* ======================= */
 
 .ressources {
     display: flex;
     flex-direction: column;
     gap: 46px;
-    margin-left: 0; /* remet à zéro */
+    margin-left: 0;
 }
 
 .ressource {
@@ -220,9 +217,11 @@ h1 {
 }
 
 /* ======================= */
-/* BUTTONS (DU JEU PRINCIPAL)         */
+/* BUTTONS (DU JEU PRINCIPAL) - INCHANGÉS         */
 /* ======================= */
 
+/* Ces règles générales de bouton s'appliquent à tous les boutons, y compris ceux du constructeur,
+   sauf si des règles plus spécifiques les surchargent. */
 button,
 .auto-btn {
     outline: none;
@@ -261,7 +260,7 @@ button:hover {
 }
 
 /* ======================= */
-/* ENERGIE BAR (DU JEU PRINCIPAL)         */
+/* ENERGIE BAR (DU JEU PRINCIPAL) - INCHANGÉS         */
 /* ======================= */
 
 #energie-barre {
@@ -294,16 +293,16 @@ button:hover {
 }
 
 /* ======================= */
-/* STYLES DU CONSTRUCTEUR DE MODULES         */
+/* STYLES DU CONSTRUCTEUR DE MODULES (MISE À JOUR) */
 /* ======================= */
 
 .module-builder-container {
-    width: 100%; /* Prend la largeur disponible dans le flex */
-    max-width: 900px; /* Largeur maximale pour le constructeur, ajustez au besoin */
-    height: 800px; /* Hauteur fixe pour le viewport du constructeur */
+    width: 100%;
+    max-width: 900px;
+    height: 800px;
     display: flex;
-    flex-direction: column; /* Organise le titre, toolbar et viewport verticalement */
-    background-color: #333; /* Un arrière-plan pour le conteneur du constructeur */
+    flex-direction: column;
+    background-color: #333;
     border-radius: 20px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.5);
     padding: 20px;
@@ -311,7 +310,7 @@ button:hover {
 }
 
 .module-builder-container h2 {
-    color: #f0f0f0; /* Couleur pour le titre du constructeur */
+    color: #f0f0f0;
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
@@ -323,8 +322,8 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    width: 3000px; /* Taille fixe pour le workspace */
-    height: 2000px; /* Taille fixe pour le workspace */
+    width: 3000px;
+    height: 2000px;
     pointer-events: none;
     z-index: 0;
 }
@@ -338,15 +337,62 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     cursor: move;
     z-index: 1;
-    color: #333; /* Couleur de texte pour les mini-fenêtres */
-    border-radius: 8px; /* Ajouté pour un look plus doux */
+    color: #333;
+    border-radius: 8px;
 }
 
 .contenu {
     padding: 10px;
-    height: calc(100% - 20px); /* Assure que le padding n'explose pas la taille */
+    height: calc(100% - 20px);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+
+/* --- AJOUTS / MODIFICATIONS POUR LE COMPTEUR --- */
+.contenu .compteur {
+    font-size: 0.9em; /* Réduit légèrement la taille de la police */
+    white-space: nowrap; /* Empêche le retour à la ligne automatique */
+    overflow: hidden; /* Cache le texte qui dépasse */
+    text-overflow: ellipsis; /* Affiche des points de suspension (...) si le texte est tronqué */
+    max-width: 95%; /* S'assure que le texte ne prend pas toute la largeur disponible pour laisser de la marge */
+    margin-bottom: 5px; /* Ajoute un peu d'espace sous le compteur */
+    font-weight: bold; /* Pour le rendre plus visible */
+}
+
+/* Nouveaux styles pour les contrôles de craft DANS les modules */
+.craft-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.craft-controls select,
+.craft-controls button {
+    width: calc(100% - 20px); /* Ajuste la largeur pour le padding */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    /* Assure que les boutons de craft des modules ne sont pas écrasés par les styles génériques */
+    color: #333; /* Texte plus sombre pour les boutons de craft des modules */
+    font-weight: normal;
+    letter-spacing: normal;
+    box-shadow: none; /* Retire l'ombre des boutons génériques */
+    transition: background 0.2s; /* Transition pour le hover */
+}
+
+.craft-controls button:hover {
+    background-color: #e9e9e9;
+    transform: none; /* Annule la transformation hover des boutons génériques */
+}
+
 
 .point-connexion {
     width: 10px;
@@ -389,24 +435,29 @@ button:hover {
     display: none;
 }
 
-/* Styles pour les boutons spécifiques au constructeur, pour éviter les conflits */
+/* Styles pour les boutons spécifiques au constructeur (dans la toolbar/menu-types) */
 #menu-types button,
-#toolbar #btn-construire { /* Cible spécifiquement les boutons du constructeur */
-    margin: 5px 0; /* Marge ajustée */
+#toolbar #btn-construire {
+    margin: 5px 0;
     cursor: pointer;
-    background: #666; /* Couleur de bouton plus neutre pour le constructeur */
+    background: #666;
     color: white;
     border: 1px solid #888;
     padding: 8px 12px;
     border-radius: 4px;
     font-size: 0.95em;
     transition: background 0.2s, border-color 0.2s;
+    /* Annule les styles potentiellement hérités des boutons généraux du jeu */
+    box-shadow: none;
+    transform: none;
+    letter-spacing: normal;
 }
 
 #menu-types button:hover,
 #toolbar #btn-construire:hover {
     background: #777;
     border-color: #aaa;
+    transform: none; /* S'assure que le hover ne réintroduit pas de transform inattendu */
 }
 
 #viewport {
@@ -423,51 +474,85 @@ button:hover {
     width: 3000px;
     height: 2000px;
     position: relative;
-    /* Un fond pour la zone de travail si vous voulez */
-    background: repeating-grid #333 100px; /* Exemple de grille */
+    background: repeating-grid #333 100px;
     background-size: 100px 100px;
     background-image:
             linear-gradient(to right, #444 1px, transparent 1px),
             linear-gradient(to bottom, #444 1px, transparent 1px);
 }
 
-.fabrication button {
+.fabrication button { /* Si cette classe est encore utilisée, assurez-vous qu'elle est bien stylée */
     margin-top: 5px;
     display: block;
 }
 
+/* Style pour le bouton de minimisation/maximisation */
+.toggle-module-btn {
+    background: none;
+    border: none;
+    color: #333; /* Couleur du texte/icône du bouton */
+    font-size: 1.2em;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    line-height: 1;
+    padding: 0 5px;
+    z-index: 2;
+    /* Annule les styles potentiellement hérités des boutons généraux du jeu */
+    box-shadow: none;
+    transform: none;
+    letter-spacing: normal;
+    font-weight: normal;
+}
+
+.toggle-module-btn:hover {
+    color: #007bff; /* Couleur au survol */
+    transform: none; /* Annule la transformation hover des boutons génériques */
+}
+
+.mini-fenetre.minimized {
+    height: 30px;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+}
+
+.mini-fenetre.minimized .contenu .compteur,
+.mini-fenetre.minimized .contenu .fabrication,
+.mini-fenetre.minimized .contenu .craft-controls { /* Ajout pour cacher les controls de craft */
+    display: none;
+}
+
+.mini-fenetre.minimized .contenu {
+    padding: 5px 10px;
+}
+
+
 /* ======================= */
-/* RESPONSIVE (COMBINÉ)         */
+/* RESPONSIVE (DU JEU PRINCIPAL) - INCHANGÉS sauf pour .module-builder-container */
 /* ======================= */
 
-@media (max-width: 1200px) { /* Nouvelle breakpoint pour passer en colonne plus tôt */
+@media (max-width: 1200px) {
     .page-content-wrapper {
         flex-direction: column;
         align-items: center;
         gap: 36px;
         margin-top: 80px;
-        padding-left: 0; /* Réinitialise le padding pour cette breakpoint */
+        padding-left: 0;
     }
     .main-container {
-        width: 95%; /* Prend plus de largeur sur les écrans intermédiaires */
+        width: 95%;
         max-width: 600px;
         gap: 36px;
     }
-    .module-builder-container {
+    .module-builder-container { /* C'est le seul qui est adapté ici */
         width: 95%;
         max-width: 600px;
-        height: 600px; /* Ajuste la hauteur du constructeur pour les tablettes */
+        height: 600px;
     }
 }
 
 @media (max-width: 900px) {
-    /* Garde le style du jeu principal si vous le souhaitez pour cette breakpoint */
-    /* .main-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 36px;
-        margin-top: 120px;
-    } */
     .ressources {
         margin-left: 0;
         width: 100vw;
@@ -491,7 +576,7 @@ button:hover {
 }
 
 @media (max-width: 600px) {
-    body {
+    body { /* Cette règle est gardée car elle affecte le body globalement */
         font-size: 15px;
     }
     .main-container,
@@ -503,8 +588,8 @@ button:hover {
         max-width: 98vw;
         padding: 16px 8px;
     }
-    .module-builder-container {
-        height: 400px; /* Encore plus petit sur mobile */
+    .module-builder-container { /* C'est le seul qui est adapté ici */
+        height: 400px;
         padding: 10px;
     }
     .module-builder-container h2 {
