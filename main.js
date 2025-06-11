@@ -43,13 +43,53 @@ const ressourcesImages = [
     "data:image/png;base64,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",
     "https://cdn-icons-png.flaticon.com/128/14233/14233041.png"
 ];
+// --- Variables Globales pour le Four ---
+let ressourceFourSelectionnee1 = "Bois"; // Première ressource choisie
+let ressourceFourSelectionnee2 = null;   // Seconde ressource choisie (null par défaut)
+let nbRessourceFour = 0;                 // Quantité à "crafter"
+// Variable globale pour le lecteur YouTube
+let ytPlayer;
 
+const workspace = document.getElementById('workspace');
+const svg = document.getElementById('svg-arrows');
+const fenetres = [];
+
+let selectedOutput = null;
+let windowCount = 0;
+const API_BASE_URL = 'http://localhost:8080/API/';
 // =================================================================================================================
 // Fonctions et variables de l'inventaire, API et YouTube (votre second script)
 // =================================================================================================================
 
-// Variable globale pour le lecteur YouTube
-let ytPlayer;
+
+// Fonctions d'interaction avec l'API // <-- CES FONCTIONS MANQUAIENT !
+async function getResourceStock(resourceName) {
+    try {
+        const response = await fetch(`${API_BASE_URL}quantite/${resourceName}`);
+        if (!response.ok) {
+            console.error(`Erreur HTTP lors de la récupération de la quantité de ${resourceName}: ${response.status} ${response.statusText}`);
+            return 0;
+        }
+        const data = await response.json();
+        return data.quantite;
+    } catch (error) {
+        console.error(`Erreur lors de la récupération de la quantité de ${resourceName}:`, error);
+        return 0;
+    }
+}
+
+// Fonction de mise à jour de l'affichage du stock d'un module (maintenant globale)
+async function updateModuleStockDisplay(selectedItem, moduleStockDisplayElement) {
+    if (selectedItem && moduleStockDisplayElement) {
+        moduleStockDisplayElement.textContent = `Stock: Chargement...`;
+        const stock = await getResourceStock(selectedItem);
+        moduleStockDisplayElement.textContent = `Stock: ${stock}`;
+    } else {
+        if (moduleStockDisplayElement) {
+            moduleStockDisplayElement.textContent = `Stock: N/A`;
+        }
+    }
+}
 
 function playYoutubeSound(videoId, startSeconds = 0, duration = 3) {
     // Si le player existe déjà, on le détruit pour réinitialiser la lecture
@@ -182,12 +222,6 @@ function ajouterPierre() {
         });
 }
 
-
-// --- Variables Globales pour le Four ---
-let ressourceFourSelectionnee1 = "Bois"; // Première ressource choisie
-let ressourceFourSelectionnee2 = null;   // Seconde ressource choisie (null par défaut)
-let nbRessourceFour = 0;                 // Quantité à "crafter"
-
 // --- Fonctions du Four ---
 
 // Gère le changement de la PREMIÈRE ressource (selectRessourceFour1)
@@ -265,14 +299,14 @@ function lancerCuisson() {
             return response.text();
         })
         .then(data => {
-            alert(`Craft lancé avec succès ! Réponse : ${data}`);
+            console.log(`Craft lancé avec succès ! Réponse : ${data}`);
             nbRessourceFour = 0;
             document.getElementById("ressourceFour").textContent = nbRessourceFour;
             // Recharger l'inventaire pour refléter la consommation et la production
             reloadInventaire(); // Assurez-vous que cette fonction existe
         })
         .catch(error => {
-            alert(`Échec du craft : ${error.message}`);
+            console.log(`Échec du craft : ${error.message}`);
             console.error('Détails de l\'erreur de craft :', error);
         });
 }
@@ -313,58 +347,10 @@ function onYouTubeIframeAPIReady() {
 }
 
 // =================================================================================================================
-// Partie sur les chaine de prod
+// Partie sur les chaines de prod
 // =================================================================================================================
 
-const workspace = document.getElementById('workspace');
-const svg = document.getElementById('svg-arrows');
-const fenetres = [];
 
-let selectedOutput = null;
-let windowCount = 0;
-
-const API_BASE_URL = 'http://localhost:8080/API/';
-
-async function getResourceStock(resourceName) {
-    try {
-        const response = await fetch(`${API_BASE_URL}quantite/${resourceName}`);
-        if (!response.ok) {
-            console.error(`Erreur HTTP lors de la récupération de la quantité de ${resourceName}: ${response.status} ${response.statusText}`);
-            return 0;
-        }
-        const data = await response.json();
-        return data.quantite;
-    } catch (error) {
-        console.error(`Erreur lors de la récupération de la quantité de ${resourceName}:`, error);
-        return 0;
-    }
-}
-
-// Fonction pour mettre à jour la quantité d'une ressource via l'API
-async function updateResourceStock(resourceName, delta) {
-    try {
-        const response = await fetch(`${API_BASE_URL}quantite/${resourceName}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ delta: delta }),
-        });
-
-        if (!response.ok) {
-            console.error(`Erreur HTTP lors de la mise à jour de la quantité de ${resourceName}: ${response.status} ${response.statusText}`);
-            const errorBody = await response.text();
-            console.error('Détails de l\'erreur API:', errorBody);
-            return false;
-        }
-        const data = await response.json();
-        console.log(`Stock de ${resourceName} mis à jour via API: ${data.nouvelleQuantite || 'Succès'}`);
-        return true;
-    } catch (error) {
-        console.error(`Erreur lors de la mise à jour de la quantité de ${resourceName} via API:`, error);
-        return false;
-    }
-}
 
 document.getElementById('btn-construire').addEventListener('click', () => {
     const menu = document.getElementById('menu-types');
@@ -446,19 +432,10 @@ async function createWindow(type, x, y) {
     win._craftInterval = null;
     win._isCrafting = false;
 
-    const updateModuleStockDisplay = async (selectedItem) => {
-        if (selectedItem) {
-            moduleStockDisplay.textContent = `Stock: Chargement...`;
-            const stock = await getResourceStock(selectedItem);
-            moduleStockDisplay.textContent = `Stock: ${stock}`;
-        } else {
-            moduleStockDisplay.textContent = `Stock: N/A`;
-        }
-    };
-
+    // Appel de la fonction globale updateModuleStockDisplay
     craftSelect.addEventListener('change', async () => {
         const selectedItem = craftSelect.value;
-        await updateModuleStockDisplay(selectedItem);
+        await updateModuleStockDisplay(selectedItem, moduleStockDisplay); // <-- Modification ici
 
         if (win._isCrafting) {
             clearInterval(win._craftInterval);
@@ -468,8 +445,9 @@ async function createWindow(type, x, y) {
         }
     });
 
+    // Appel initial de la fonction globale updateModuleStockDisplay
     if (craftSelect.value) {
-        await updateModuleStockDisplay(craftSelect.value);
+        await updateModuleStockDisplay(craftSelect.value, moduleStockDisplay); // <-- Modification ici
     }
 
     craftBtn.addEventListener('click', () => {
@@ -481,7 +459,7 @@ async function createWindow(type, x, y) {
 
         if (!win._isCrafting) {
             win._craftInterval = setInterval(() => {
-                lancerCuisson(win, selectedCraft, moduleStockDisplay);
+                lancerCuissonAutomatique(win, selectedCraft, moduleStockDisplay);
             }, 1000);
             win._isCrafting = true;
             craftBtn.textContent = 'Arrêter Craft';
@@ -521,28 +499,81 @@ async function createWindow(type, x, y) {
     fenetres.push(win);
 }
 
-// Fonction pour gérer le processus de cuisson/crafting
-async function lancerCuisson(module, itemToCraft, moduleStockDisplay) {
-    const currentStock = await getResourceStock(itemToCraft);
+async function lancerCuissonAutomatique(module, itemToCraft, moduleStockDisplayElement) { // Renommé le paramètre ici aussi
+    let urlAPI;
+    let nombreDeCraft = 999999999;
 
-    if (currentStock > 0) {
-        const success = await updateResourceStock(itemToCraft, -1);
-        if (success) {
-            const newStock = await getResourceStock(itemToCraft);
-            moduleStockDisplay.textContent = `Stock: ${newStock}`;
-        } else {
-            console.warn(`Échec de la mise à jour du stock de ${itemToCraft} via l'API. Arrêt du craft.`);
+    let inputRessource1 = null;
+    let inputRessource2 = null;
+
+    switch (itemToCraft) {
+        case "Lingot de Fer":
+            inputRessource1 = "Fer Brut";
+            break;
+        case "Lingot d'Acier":
+            inputRessource1 = "Lingot de Fer";
+            inputRessource2 = "Charbon";
+            break;
+        case "Lingot de Zinc":
+            inputRessource1 = "Zinc Brut";
+            break;
+        case "Lingot de Cuivre":
+            inputRessource1 = "Cuivre Brut";
+            break;
+        case "Lingot d'Or":
+            inputRessource1 = "Or Brut";
+            break;
+        case "Charbon":
+            inputRessource1 = "Bois";
+            break;
+        default:
+            console.error(`Craft non reconnu pour les machines: ${itemToCraft}`);
+            moduleStockDisplayElement.textContent = `Erreur: Craft non supporté.`; // Utilisation du paramètre
+            if (module && module._craftInterval) {
+                clearInterval(module._craftInterval);
+                module._isCrafting = false;
+                module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+            }
+            return;
+    }
+
+    if (inputRessource1 && inputRessource2) {
+        urlAPI = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(inputRessource1)}/${encodeURIComponent(inputRessource2)}/${nombreDeCraft}`;
+    } else if (inputRessource1) {
+        urlAPI = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(inputRessource1)}/${nombreDeCraft}`;
+    } else {
+        console.error(`Impossible de déterminer l'URL du four pour ${itemToCraft}.`);
+        moduleStockDisplayElement.textContent = `Erreur: Impossible de crafter.`; // Utilisation du paramètre
+        if (module && module._craftInterval) {
             clearInterval(module._craftInterval);
             module._isCrafting = false;
             module.querySelector('.craft-btn').textContent = 'Lancer Craft';
-            moduleStockDisplay.textContent = `Stock: ${currentStock}`;
         }
-    } else {
-        console.log(`Pas assez de ${itemToCraft} pour continuer le craft. Arrêt. `);
-        clearInterval(module._craftInterval);
-        module._isCrafting = false;
-        module.querySelector('.craft-btn').textContent = 'Lancer Craft';
-        moduleStockDisplay.textContent = `Stock: 0`;
+        return;
+    }
+
+    console.log(`Lancement du four (automatique) pour ${itemToCraft} avec URL : ${urlAPI}`);
+
+    try {
+        const response = await fetch(urlAPI, { method: "GET" });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur du serveur (${response.status}) : ${errorText}`);
+        }
+        const data = await response.text();
+        console.log(`Craft automatique de ${itemToCraft} lancé ! Réponse : ${data}`);
+
+        const newStock = await getResourceStock(itemToCraft);
+        moduleStockDisplayElement.textContent = `Stock: ${newStock}`; // Utilisation du paramètre
+        reloadInventaire();
+    } catch (error) {
+        console.log(`Échec du craft automatique de ${itemToCraft}: ${error.message}`);
+        console.error('Détails de l\'erreur de craft automatique :', error);
+        if (module && module._craftInterval) {
+            clearInterval(module._craftInterval);
+            module._isCrafting = false;
+            module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+        }
     }
 }
 
