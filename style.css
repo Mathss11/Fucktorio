@@ -1,5 +1,5 @@
 /* ======================= */
-/*     BASE STYLES         */
+/* BASE STYLES (DU JEU PRINCIPAL) */
 /* ======================= */
 
 body {
@@ -11,6 +11,9 @@ body {
     text-shadow: 0 1px 2px #000a;
     letter-spacing: 0.1px;
     font-size: 17px;
+    overflow-x: hidden; /* Empêche le défilement horizontal non désiré du body */
+    /* Remove overflow: hidden; from the builder's body style */
+    /* position: relative; (du builder, pas nécessaire ici, le body est déjà le conteneur) */
 }
 
 /* TITRES */
@@ -24,38 +27,42 @@ h1 {
 }
 
 /* ======================= */
-/* MAIN LAYOUT         */
+/* MAIN LAYOUT (DU JEU PRINCIPAL) */
 /* ======================= */
+
+.page-content-wrapper {
+    display: flex; /* Utilise flexbox pour aligner les deux grandes sections côte à côte */
+    justify-content: center; /* Centre les sections dans le wrapper */
+    align-items: flex-start; /* Aligne le haut des sections */
+    gap: 64px; /* Espace entre les deux sections (jeu et constructeur) */
+    width: 100%;
+    max-width: 1800px; /* Augmente la largeur max pour accueillir les deux sections */
+    margin: 56px auto 64px auto; /* Centre le wrapper et gère les marges */
+    padding: 0 20px; /* Petit padding sur les côtés pour éviter que le contenu touche les bords */
+    box-sizing: border-box; /* Important pour que le padding soit inclus dans la largeur */
+}
 
 .main-container {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 64px;
-    /* Ajustement important : Ajoutez une marge gauche pour laisser de la place à l'inventaire fixe */
-    margin-top: 56px;
-    width: 100%;
-    max-width: 1400px;
-    margin-left: auto; /* Sera ajusté plus bas pour compenser l'inventaire */
-    margin-right: auto;
-    padding-bottom: 64px;
-    /* Ajouter un padding-left pour créer un espace sur la gauche pour l'inventaire fixe */
-    padding-left: 360px; /* Largeur inventaire (320px) + marge (40px) */
-    box-sizing: border-box; /* Pour que le padding ne s'ajoute pas à la largeur totale */
+    flex-direction: column; /* Garde la disposition verticale des éléments du jeu */
+    align-items: center;
+    gap: 64px; /* Espace entre l'inventaire, ressources, four */
+    width: 100%; /* Permet de prendre la largeur disponible dans le flex */
+    max-width: 800px; /* Ajustez au besoin la largeur max de votre section de jeu */
+    padding-bottom: 0; /* Pas besoin de padding-bottom ici, géré par le wrapper */
+    margin: 0; /* Reset margins, now managed by flexbox */
 }
 
 /* ======================= */
-/* INVENTAIRE FIXE      */
+/* INVENTAIRE FIXE (DU JEU PRINCIPAL)      */
 /* ======================= */
 
 .inventaire {
-    /* Propriétés pour rendre l'inventaire fixe */
-    position: fixed; /* Rend l'élément fixe par rapport à la fenêtre de visualisation */
-    top: 20px; /* Positionne l'inventaire à 20px du haut de la page */
-    left: 20px; /* Positionne l'inventaire à 20px de la gauche de la page */
-    z-index: 100; /* Assure que l'inventaire est au-dessus d'autres éléments s'ils se chevauchent */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
 
-    /* Vos propriétés existantes pour l'inventaire */
     max-height: 400px;
     width: 320px;
     overflow-y: auto;
@@ -68,10 +75,8 @@ h1 {
     color: #f0f0f0;
     box-sizing: border-box;
     box-shadow: 0 4px 24px #0005;
-    /* Supprimer les marges automatiques qui sont incompatibles avec position: fixed */
-    /* margin: 20px auto; <= Supprimez ou commentez cette ligne */
+    /* margin: 20px auto; <= Supprimé précédemment */
 }
-/* Le reste du CSS de .inventaire et de ses enfants reste inchangé */
 .inventaire > * {
     direction: ltr;
 }
@@ -121,7 +126,6 @@ h1 {
     border-radius: 50%;
     box-shadow: 0 2px 12px #0004;
 }
-/* Scrollbar style optionnel */
 .inventaire::-webkit-scrollbar {
     width: 12px;
 }
@@ -137,8 +141,9 @@ h1 {
     scrollbar-width: thin;
     scrollbar-color: #393939 #232323;
 }
+
 /* ======================= */
-/* FOUR ZONE         */
+/* FOUR ZONE (DU JEU PRINCIPAL)         */
 /* ======================= */
 
 .four-zone {
@@ -179,7 +184,7 @@ h1 {
 }
 
 /* ======================= */
-/*        RESSOURCES       */
+/* RESSOURCES (DU JEU PRINCIPAL)       */
 /* ======================= */
 
 .ressources {
@@ -188,7 +193,6 @@ h1 {
     gap: 46px;
     margin-left: 0; /* remet à zéro */
 }
-
 
 .ressource {
     background: rgba(40, 46, 60, 0.96);
@@ -216,7 +220,7 @@ h1 {
 }
 
 /* ======================= */
-/*         BUTTONS         */
+/* BUTTONS (DU JEU PRINCIPAL)         */
 /* ======================= */
 
 button,
@@ -257,7 +261,7 @@ button:hover {
 }
 
 /* ======================= */
-/*     ENERGIE BAR         */
+/* ENERGIE BAR (DU JEU PRINCIPAL)         */
 /* ======================= */
 
 #energie-barre {
@@ -290,31 +294,192 @@ button:hover {
 }
 
 /* ======================= */
-/* RESPONSIVE         */
+/* STYLES DU CONSTRUCTEUR DE MODULES         */
 /* ======================= */
 
-@media (max-width: 900px) {
+.module-builder-container {
+    width: 100%; /* Prend la largeur disponible dans le flex */
+    max-width: 900px; /* Largeur maximale pour le constructeur, ajustez au besoin */
+    height: 800px; /* Hauteur fixe pour le viewport du constructeur */
+    display: flex;
+    flex-direction: column; /* Organise le titre, toolbar et viewport verticalement */
+    background-color: #333; /* Un arrière-plan pour le conteneur du constructeur */
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.module-builder-container h2 {
+    color: #f0f0f0; /* Couleur pour le titre du constructeur */
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 2em;
+    letter-spacing: 1.5px;
+}
+
+#svg-arrows {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3000px; /* Taille fixe pour le workspace */
+    height: 2000px; /* Taille fixe pour le workspace */
+    pointer-events: none;
+    z-index: 0;
+}
+
+.mini-fenetre {
+    width: 200px;
+    height: 120px;
+    background-color: white;
+    border: 2px solid #444;
+    position: absolute;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: move;
+    z-index: 1;
+    color: #333; /* Couleur de texte pour les mini-fenêtres */
+    border-radius: 8px; /* Ajouté pour un look plus doux */
+}
+
+.contenu {
+    padding: 10px;
+    height: calc(100% - 20px); /* Assure que le padding n'explose pas la taille */
+    text-align: center;
+}
+
+.point-connexion {
+    width: 10px;
+    height: 10px;
+    background-color: #000000;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+
+.point-haut {
+    top: -6px;
+    left: calc(50% - 5px);
+}
+
+.point-bas {
+    bottom: -6px;
+    left: calc(50% - 5px);
+}
+
+#toolbar {
+    position: relative; /* Rendu relatif pour qu'il reste dans le flux du conteneur */
+    top: auto; /* Annule la position fixe du builder */
+    left: auto; /* Annule la position fixe du builder */
+    z-index: 10;
+    margin-bottom: 15px; /* Espace sous la toolbar */
+}
+
+#menu-types {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    background-color: #444; /* Darker background pour le menu */
+    border: 1px solid #777;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+#menu-types.hidden {
+    display: none;
+}
+
+/* Styles pour les boutons spécifiques au constructeur, pour éviter les conflits */
+#menu-types button,
+#toolbar #btn-construire { /* Cible spécifiquement les boutons du constructeur */
+    margin: 5px 0; /* Marge ajustée */
+    cursor: pointer;
+    background: #666; /* Couleur de bouton plus neutre pour le constructeur */
+    color: white;
+    border: 1px solid #888;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+#menu-types button:hover,
+#toolbar #btn-construire:hover {
+    background: #777;
+    border-color: #aaa;
+}
+
+#viewport {
+    width: 100%;
+    height: 100%; /* Prend toute la hauteur restante du module-builder-container */
+    overflow: scroll; /* Permet le défilement à l'intérieur du viewport */
+    position: relative;
+    background-color: #222; /* Fond plus sombre pour le viewport */
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Ombre interne pour effet de profondeur */
+}
+
+#workspace {
+    width: 3000px;
+    height: 2000px;
+    position: relative;
+    /* Un fond pour la zone de travail si vous voulez */
+    background: repeating-grid #333 100px; /* Exemple de grille */
+    background-size: 100px 100px;
+    background-image:
+            linear-gradient(to right, #444 1px, transparent 1px),
+            linear-gradient(to bottom, #444 1px, transparent 1px);
+}
+
+.fabrication button {
+    margin-top: 5px;
+    display: block;
+}
+
+/* ======================= */
+/* RESPONSIVE (COMBINÉ)         */
+/* ======================= */
+
+@media (max-width: 1200px) { /* Nouvelle breakpoint pour passer en colonne plus tôt */
+    .page-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+        margin-top: 80px;
+        padding-left: 0; /* Réinitialise le padding pour cette breakpoint */
+    }
     .main-container {
+        width: 95%; /* Prend plus de largeur sur les écrans intermédiaires */
+        max-width: 600px;
+        gap: 36px;
+    }
+    .module-builder-container {
+        width: 95%;
+        max-width: 600px;
+        height: 600px; /* Ajuste la hauteur du constructeur pour les tablettes */
+    }
+}
+
+@media (max-width: 900px) {
+    /* Garde le style du jeu principal si vous le souhaitez pour cette breakpoint */
+    /* .main-container {
         flex-direction: column;
         align-items: center;
         gap: 36px;
         margin-top: 120px;
-        /* Réinitialiser le padding-left pour les écrans plus petits */
-        padding-left: 0;
-    }
+    } */
     .ressources {
         margin-left: 0;
         width: 100vw;
         gap: 36px;
     }
     .inventaire {
-        /* Important : annuler la position fixed pour les petits écrans */
-        position: static; /* Ou position: relative; */
+        position: static;
         margin: 32px auto 0 auto;
         max-width: 350px;
-        left: auto; /* Réinitialiser la propriété left */
-        top: auto;  /* Réinitialiser la propriété top */
-        z-index: auto; /* Réinitialiser le z-index */
+        left: auto;
+        top: auto;
+        z-index: auto;
     }
     #energie-barre {
         position: static;
@@ -322,6 +487,28 @@ button:hover {
         width: fit-content;
         display: flex;
         justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 15px;
+    }
+    .main-container,
+    .ressources {
+        padding: 0 6px;
+    }
+    .inventaire {
+        min-width: 90vw;
+        max-width: 98vw;
+        padding: 16px 8px;
+    }
+    .module-builder-container {
+        height: 400px; /* Encore plus petit sur mobile */
+        padding: 10px;
+    }
+    .module-builder-container h2 {
+        font-size: 1.5em;
     }
 }
 

@@ -2,23 +2,24 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Industricraft - Début</title>
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/3211/3211645.png">
+    <title>Industricraft - Le jeu</title> <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/3211/3211645.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 <h1>Industricraft</h1>
 
-<div class="main-container">
+<div class="page-content-wrapper"> <div class="main-container">
     <div class="inventaire">
         <img src="https://cdn-icons-png.flaticon.com/128/4333/4333249.png" alt="Sac à dos" class="sacado">
-        <h2>Inventaire</h2>
-        <img src="https://cdn-icons-gif.flaticon.com/16272/16272971.gif"
-             alt="Rafraîchir inventaire"
-             class="reload-icon"
-             onclick="reloadInventaire()"
-             title="Rafraîchir l'inventaire">
+        <div class="inventaire-header">
+            <h2>Inventaire</h2>
+            <img src="https://cdn-icons-gif.flaticon.com/16272/16272971.gif"
+                 alt="Rafraîchir inventaire"
+                 class="reload-icon"
+                 onclick="reloadInventaire()"
+                 title="Rafraîchir l'inventaire">
+        </div>
     </div>
 
     <div class="ressources">
@@ -33,7 +34,7 @@
             <button class="auto-btn" onclick="ajouterPierre()">Casser de la pierre automatiquement</button>
         </div>
     </div>
-    <div id="yt-audio" style="display:none;"></div>
+
     <div class="four-zone">
         <img src="https://cdn-icons-gif.flaticon.com/12836/12836319.gif" class="inv-icon" alt="Four">
         <div>
@@ -44,9 +45,11 @@
             <select id="selectRessourceFour1" onchange="changerRessourceFour()">
                 <option value="Bois">Bois</option>
                 <option value="Fer Brut">Fer Brut</option>
-                <option value="Lingot de Fer">Lingot de Fer</option> <option value="Zinc Brut">Zinc Brut</option>
+                <option value="Lingot de Fer">Lingot de Fer</option>
+                <option value="Zinc Brut">Zinc Brut</option>
                 <option value="Cuivre Brut">Cuivre Brut</option>
                 <option value="Or Brut">Or Brut</option>
+                <option value="Pierre Brute">Pierre Brute</option>
             </select>
 
             <select id="selectRessourceFour2" style="display: none;" onchange="changerRessourceFour2()">
@@ -59,7 +62,23 @@
             <button class="action-btn" onclick="lancerCuisson()">Faire cuire</button>
         </div>
     </div>
-</div>
+</div> <div class="module-builder-container"> <h2>Constructeur de Chaînes</h2>
+    <div id="toolbar">
+        <button id="btn-construire">Construire</button>
+        <div id="menu-types" class="hidden">
+            <button data-type="Four">Four</button>
+            <button data-type="Façonneur">Façonneur</button>
+            <button data-type="Formeur">Formeur</button>
+            <button data-type="Casseur">Casseur</button>
+        </div>
+    </div>
+
+    <div id="viewport">
+        <div id="workspace">
+            <svg id="svg-arrows"></svg>
+        </div>
+    </div>
+</div> </div> <div id="yt-audio" style="display:none;"></div>
 
 <div id="energie-barre">
     <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a1.svg" alt="éclair" id="energie-logo">
