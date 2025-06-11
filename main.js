@@ -43,6 +43,279 @@ const ressourcesImages = [
     "data:image/png;base64,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",
     "https://cdn-icons-png.flaticon.com/128/14233/14233041.png"
 ];
+
+// =================================================================================================================
+// Fonctions et variables de l'inventaire, API et YouTube (votre second script)
+// =================================================================================================================
+
+// Variable globale pour le lecteur YouTube
+let ytPlayer;
+
+function playYoutubeSound(videoId, startSeconds = 0, duration = 3) {
+    // Si le player existe déjà, on le détruit pour réinitialiser la lecture
+    if (ytPlayer) {
+        ytPlayer.destroy();
+    }
+
+    // Crée un div pour le lecteur YouTube s'il n'existe pas
+    if (!document.getElementById('yt-audio')) {
+        const ytAudioDiv = document.createElement('div');
+        ytAudioDiv.id = 'yt-audio';
+        ytAudioDiv.style.position = 'absolute';
+        ytAudioDiv.style.left = '-9999px'; // Le cache hors de l'écran
+        document.body.appendChild(ytAudioDiv);
+    }
+
+    ytPlayer = new YT.Player('yt-audio', {
+        height: '0',
+        width: '0',
+        videoId: videoId,
+        playerVars: {
+            'autoplay': 1,
+            'controls': 0,
+            'showinfo': 0,
+            'modestbranding': 1,
+            'loop': 0,
+            'start': startSeconds,
+            'mute': 0,
+        },
+        events: {
+            'onReady': function(event) {
+                event.target.playVideo();
+                // Arrête la lecture après X secondes si besoin
+                setTimeout(() => {
+                    event.target.stopVideo();
+                }, duration * 1000);
+            }
+        }
+    });
+}
+
+// On cible le bloc inventaire (à adapter selon ton HTML)
+const inventaireDiv = document.querySelector('.inventaire');
+
+// On ajoute chaque ressource dans l'inventaire
+ressourcesNoms.forEach((nom, i) => {
+    // Génère un id unique et lisible pour chaque ressource
+    const id = nom.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // retire accents
+        .replace(/[^a-z0-9]/g, ""); // retire espaces et apostrophes
+
+    inventaireDiv.innerHTML += `
+        <div class="item-stock">
+            <img src="${ressourcesImages[i]}" class="inv-icon" alt="${nom}">
+            <span id="${id}">0</span> ${nom}
+        </div>
+    `;
+});
+
+function reloadInventaire() {
+    ressourcesNoms.forEach(nom => {
+        fetch(`http://localhost:8080/API/quantite/${nom}`)
+            .then(resp => resp.text())
+            .then(qte => {
+                // Reproduit la logique de génération d'ID utilisée pour le HTML
+                const idGenere = nom.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // retire accents
+                    .replace(/[^a-z0-9]/g, ""); // retire espaces et apostrophes
+
+                // Utilise l'ID généré pour cibler le bon <span>
+                const span = document.getElementById(idGenere);
+
+                if (span) {
+                    span.textContent = qte;
+                } else {
+                    console.warn(`Élément avec l'ID '${idGenere}' introuvable pour la ressource '${nom}'.`);
+                }
+            })
+            .catch(error => {
+                const idGenere = nom.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9]/g, "");
+
+                const span = document.getElementById(idGenere);
+                if (span) {
+                    span.textContent = "?";
+                } else {
+                    console.error(`Erreur de chargement pour '${nom}' et élément avec l'ID '${idGenere}' introuvable.`, error);
+                }
+            });
+    });
+}
+
+function ajouterBois() {
+    fetch("http://localhost:8080/API/ajouter/ressource/Bois", {
+        method: "POST"
+    })
+        .then(response => response.text())
+        .then(() => {
+            fetch("http://localhost:8080/API/quantite/Bois")
+                .then(resp => resp.text())
+                .then(qte => {
+                    document.getElementById("bois").textContent = qte;
+                    console.log("Quantité reçue du serveur :", qte);
+                    reloadInventaire(); // Recharger tout l'inventaire après ajout
+                });
+        })
+        .catch(error => {
+            alert("Erreur : " + error);
+        });
+}
+
+function ajouterPierre() {
+    fetch("http://localhost:8080/API/ajouter/ressource/Pierre Brute", {
+        method: "POST"
+    })
+        .then(response => response.text())
+        .then(() => {
+            fetch("http://localhost:8080/API/quantite/Pierre Brute")
+                .then(resp => resp.text())
+                .then(qte => {
+                    document.getElementById("pierrebrute").textContent = qte;
+                    console.log("Quantité reçue du serveur :", qte);
+                    playYoutubeSound("MXibe4aNdGg", 8, 2);
+                    reloadInventaire(); // Recharger tout l'inventaire après ajout
+                });
+        })
+        .catch(error => {
+            alert("Erreur : " + error);
+        });
+}
+
+
+// --- Variables Globales pour le Four ---
+let ressourceFourSelectionnee1 = "Bois"; // Première ressource choisie
+let ressourceFourSelectionnee2 = null;   // Seconde ressource choisie (null par défaut)
+let nbRessourceFour = 0;                 // Quantité à "crafter"
+
+// --- Fonctions du Four ---
+
+// Gère le changement de la PREMIÈRE ressource (selectRessourceFour1)
+function changerRessourceFour() {
+    const selectElement1 = document.getElementById("selectRessourceFour1");
+    const selectElement2 = document.getElementById("selectRessourceFour2");
+
+    ressourceFourSelectionnee1 = selectElement1.value;
+
+    // Logique pour afficher/cacher la seconde liste déroulante
+    if (ressourceFourSelectionnee1 === "Lingot de Fer") {
+        selectElement2.style.display = "inline-block"; // Affiche la seconde liste
+        // On initialise la deuxième ressource sur "Charbon" si elle est visible
+        ressourceFourSelectionnee2 = selectElement2.value;
+    } else {
+        selectElement2.style.display = "none"; // Cache la seconde liste
+        ressourceFourSelectionnee2 = null; // Réinitialise la seconde ressource
+    }
+
+    // Réinitialise la quantité et l'affichage quand la première ressource change
+    nbRessourceFour = 0;
+    document.getElementById("ressourceFour").textContent = nbRessourceFour;
+}
+
+// Gère le changement de la SECONDE ressource (selectRessourceFour2)
+function changerRessourceFour2() {
+    const selectElement2 = document.getElementById("selectRessourceFour2");
+    ressourceFourSelectionnee2 = selectElement2.value;
+    // On ne réinitialise pas la quantité ici, elle est liée au craft en cours.
+}
+
+function modifierRessourceFour(val) {
+    nbRessourceFour += val;
+    if (nbRessourceFour < 0) {
+        nbRessourceFour = 0;
+    }
+    document.getElementById("ressourceFour").textContent = nbRessourceFour;
+}
+
+// Lance le processus de cuisson/crafting
+function lancerCuisson() {
+    if (nbRessourceFour <= 0) {
+        alert("Veuillez sélectionner une quantité à crafter.");
+        return;
+    }
+
+    let urlAPI;
+    let nomRessource1 = encodeURIComponent(ressourceFourSelectionnee1);
+    let nomRessource2 = ressourceFourSelectionnee2 ? encodeURIComponent(ressourceFourSelectionnee2) : null;
+    let nombreDeCraft = nbRessourceFour;
+
+    // Vérifie si c'est un craft à double entrée (Lingot de Fer + Charbon)
+    if (ressourceFourSelectionnee1 === "Lingot de Fer" && ressourceFourSelectionnee2 === "Charbon") {
+        // Appelle le nouvel endpoint pour les deux ressources
+        // Il est crucial que votre API gère les deux ressources dans cet ordre ou de manière agnostique
+        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nomRessource2}/${nombreDeCraft}`;
+        // Note: Vous devrez créer cet endpoint dans votre Spring Boot !
+        // @GetMapping("/utiliserFourDoubleEntree/{ressource1}/{ressource2}/{nombreDeCraft}")
+    } else {
+        // Sinon, c'est un craft simple comme avant
+        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nombreDeCraft}`;
+    }
+
+    console.log(`Lancement du four avec URL : ${urlAPI}`);
+
+    fetch(urlAPI, {
+        method: "GET" // Reste en GET selon votre API
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Erreur du serveur (${response.status}) : ${text}`);
+                });
+            }
+            return response.text();
+        })
+        .then(data => {
+            alert(`Craft lancé avec succès ! Réponse : ${data}`);
+            nbRessourceFour = 0;
+            document.getElementById("ressourceFour").textContent = nbRessourceFour;
+            // Recharger l'inventaire pour refléter la consommation et la production
+            reloadInventaire(); // Assurez-vous que cette fonction existe
+        })
+        .catch(error => {
+            alert(`Échec du craft : ${error.message}`);
+            console.error('Détails de l\'erreur de craft :', error);
+        });
+}
+
+// Fonction pour charger l'API YouTube IFrame Player de manière asynchrone
+function loadYoutubeAPI() {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// Appeler cette fonction une fois que le DOM est chargé pour charger l'API YouTube
+document.addEventListener('DOMContentLoaded', () => {
+    loadYoutubeAPI();
+    // Recharger l'inventaire au chargement de la page
+    reloadInventaire();
+
+    // Assurez-vous que les éléments de sélection du four existent avant d'attacher les écouteurs
+    const selectRessourceFour1 = document.getElementById("selectRessourceFour1");
+    if (selectRessourceFour1) {
+        selectRessourceFour1.addEventListener("change", changerRessourceFour);
+        changerRessourceFour(); // Appeler une fois pour initialiser
+    }
+
+    const selectRessourceFour2 = document.getElementById("selectRessourceFour2");
+    if (selectRessourceFour2) {
+        selectRessourceFour2.addEventListener("change", changerRessourceFour2);
+    }
+});
+
+// onYouTubeIframeAPIReady est appelée automatiquement par l'API YouTube
+// une fois qu'elle est prête.
+function onYouTubeIframeAPIReady() {
+    console.log("API YouTube IFrame Player est prête.");
+    // Vous pouvez initialiser votre player ici si vous voulez qu'il soit prêt au chargement de la page,
+    // ou laisser playYoutubeSound le créer dynamiquement quand il est appelé.
+}
+
+// =================================================================================================================
+// Partie sur les chaine de prod
+// =================================================================================================================
+
 const workspace = document.getElementById('workspace');
 const svg = document.getElementById('svg-arrows');
 const fenetres = [];
@@ -70,8 +343,8 @@ async function getResourceStock(resourceName) {
 // Fonction pour mettre à jour la quantité d'une ressource via l'API
 async function updateResourceStock(resourceName, delta) {
     try {
-        const response = await fetch(`${API_BASE_URL}updateQuantite/${resourceName}`, {
-            method: 'PUT',
+        const response = await fetch(`${API_BASE_URL}quantite/${resourceName}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -301,274 +574,4 @@ function makeDraggable(win) {
     document.addEventListener('mouseup', () => {
         isDragging = false;
     });
-}
-// =================================================================================================================
-// Fonctions et variables de l'inventaire, API et YouTube (votre second script)
-// =================================================================================================================
-
-// Variable globale pour le lecteur YouTube
-let ytPlayer;
-
-function playYoutubeSound(videoId, startSeconds = 0, duration = 3) {
-    // Si le player existe déjà, on le détruit pour réinitialiser la lecture
-    if (ytPlayer) {
-        ytPlayer.destroy();
-    }
-
-    // Crée un div pour le lecteur YouTube s'il n'existe pas
-    if (!document.getElementById('yt-audio')) {
-        const ytAudioDiv = document.createElement('div');
-        ytAudioDiv.id = 'yt-audio';
-        ytAudioDiv.style.position = 'absolute';
-        ytAudioDiv.style.left = '-9999px'; // Le cache hors de l'écran
-        document.body.appendChild(ytAudioDiv);
-    }
-
-    ytPlayer = new YT.Player('yt-audio', {
-        height: '0',
-        width: '0',
-        videoId: videoId,
-        playerVars: {
-            'autoplay': 1,
-            'controls': 0,
-            'showinfo': 0,
-            'modestbranding': 1,
-            'loop': 0,
-            'start': startSeconds,
-            'mute': 0,
-        },
-        events: {
-            'onReady': function(event) {
-                event.target.playVideo();
-                // Arrête la lecture après X secondes si besoin
-                setTimeout(() => {
-                    event.target.stopVideo();
-                }, duration * 1000);
-            }
-        }
-    });
-}
-
-
-
-
-// On cible le bloc inventaire (à adapter selon ton HTML)
-const inventaireDiv = document.querySelector('.inventaire');
-
-// On ajoute chaque ressource dans l'inventaire
-ressourcesNoms.forEach((nom, i) => {
-    // Génère un id unique et lisible pour chaque ressource
-    const id = nom.toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // retire accents
-        .replace(/[^a-z0-9]/g, ""); // retire espaces et apostrophes
-
-    inventaireDiv.innerHTML += `
-        <div class="item-stock">
-            <img src="${ressourcesImages[i]}" class="inv-icon" alt="${nom}">
-            <span id="${id}">0</span> ${nom}
-        </div>
-    `;
-});
-
-function reloadInventaire() {
-    ressourcesNoms.forEach(nom => {
-        fetch(`http://localhost:8080/API/quantite/${nom}`)
-            .then(resp => resp.text())
-            .then(qte => {
-                // Reproduit la logique de génération d'ID utilisée pour le HTML
-                const idGenere = nom.toLowerCase()
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // retire accents
-                    .replace(/[^a-z0-9]/g, ""); // retire espaces et apostrophes
-
-                // Utilise l'ID généré pour cibler le bon <span>
-                const span = document.getElementById(idGenere);
-
-                if (span) {
-                    span.textContent = qte;
-                } else {
-                    console.warn(`Élément avec l'ID '${idGenere}' introuvable pour la ressource '${nom}'.`);
-                }
-            })
-            .catch(error => {
-                const idGenere = nom.toLowerCase()
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                    .replace(/[^a-z0-9]/g, "");
-
-                const span = document.getElementById(idGenere);
-                if (span) {
-                    span.textContent = "?";
-                } else {
-                    console.error(`Erreur de chargement pour '${nom}' et élément avec l'ID '${idGenere}' introuvable.`, error);
-                }
-            });
-    });
-}
-
-function ajouterBois() {
-    fetch("http://localhost:8080/API/ajouter/ressource/Bois", {
-        method: "POST"
-    })
-        .then(response => response.text())
-        .then(() => {
-            fetch("http://localhost:8080/API/quantite/Bois")
-                .then(resp => resp.text())
-                .then(qte => {
-                    document.getElementById("bois").textContent = qte;
-                    console.log("Quantité reçue du serveur :", qte);
-                    reloadInventaire(); // Recharger tout l'inventaire après ajout
-                });
-        })
-        .catch(error => {
-            alert("Erreur : " + error);
-        });
-}
-
-function ajouterPierre() {
-    fetch("http://localhost:8080/API/ajouter/ressource/Pierre Brute", {
-        method: "POST"
-    })
-        .then(response => response.text())
-        .then(() => {
-            fetch("http://localhost:8080/API/quantite/Pierre Brute")
-                .then(resp => resp.text())
-                .then(qte => {
-                    document.getElementById("pierrebrute").textContent = qte;
-                    console.log("Quantité reçue du serveur :", qte);
-                    playYoutubeSound("MXibe4aNdGg", 8, 2);
-                    reloadInventaire(); // Recharger tout l'inventaire après ajout
-                });
-        })
-        .catch(error => {
-            alert("Erreur : " + error);
-        });
-}
-
-
-// --- Variables Globales pour le Four ---
-let ressourceFourSelectionnee1 = "Bois"; // Première ressource choisie
-let ressourceFourSelectionnee2 = null;   // Seconde ressource choisie (null par défaut)
-let nbRessourceFour = 0;                 // Quantité à "crafter"
-
-// --- Fonctions du Four ---
-
-// Gère le changement de la PREMIÈRE ressource (selectRessourceFour1)
-function changerRessourceFour() {
-    const selectElement1 = document.getElementById("selectRessourceFour1");
-    const selectElement2 = document.getElementById("selectRessourceFour2");
-
-    ressourceFourSelectionnee1 = selectElement1.value;
-
-    // Logique pour afficher/cacher la seconde liste déroulante
-    if (ressourceFourSelectionnee1 === "Lingot de Fer") {
-        selectElement2.style.display = "inline-block"; // Affiche la seconde liste
-        // On initialise la deuxième ressource sur "Charbon" si elle est visible
-        ressourceFourSelectionnee2 = selectElement2.value;
-    } else {
-        selectElement2.style.display = "none"; // Cache la seconde liste
-        ressourceFourSelectionnee2 = null; // Réinitialise la seconde ressource
-    }
-
-    // Réinitialise la quantité et l'affichage quand la première ressource change
-    nbRessourceFour = 0;
-    document.getElementById("ressourceFour").textContent = nbRessourceFour;
-}
-
-// Gère le changement de la SECONDE ressource (selectRessourceFour2)
-function changerRessourceFour2() {
-    const selectElement2 = document.getElementById("selectRessourceFour2");
-    ressourceFourSelectionnee2 = selectElement2.value;
-    // On ne réinitialise pas la quantité ici, elle est liée au craft en cours.
-}
-
-function modifierRessourceFour(val) {
-    nbRessourceFour += val;
-    if (nbRessourceFour < 0) {
-        nbRessourceFour = 0;
-    }
-    document.getElementById("ressourceFour").textContent = nbRessourceFour;
-}
-
-// Lance le processus de cuisson/crafting
-function lancerCuisson() {
-    if (nbRessourceFour <= 0) {
-        alert("Veuillez sélectionner une quantité à crafter.");
-        return;
-    }
-
-    let urlAPI;
-    let nomRessource1 = encodeURIComponent(ressourceFourSelectionnee1);
-    let nomRessource2 = ressourceFourSelectionnee2 ? encodeURIComponent(ressourceFourSelectionnee2) : null;
-    let nombreDeCraft = nbRessourceFour;
-
-    // Vérifie si c'est un craft à double entrée (Lingot de Fer + Charbon)
-    if (ressourceFourSelectionnee1 === "Lingot de Fer" && ressourceFourSelectionnee2 === "Charbon") {
-        // Appelle le nouvel endpoint pour les deux ressources
-        // Il est crucial que votre API gère les deux ressources dans cet ordre ou de manière agnostique
-        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nomRessource2}/${nombreDeCraft}`;
-        // Note: Vous devrez créer cet endpoint dans votre Spring Boot !
-        // @GetMapping("/utiliserFourDoubleEntree/{ressource1}/{ressource2}/{nombreDeCraft}")
-    } else {
-        // Sinon, c'est un craft simple comme avant
-        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nombreDeCraft}`;
-    }
-
-    console.log(`Lancement du four avec URL : ${urlAPI}`);
-
-    fetch(urlAPI, {
-        method: "GET" // Reste en GET selon votre API
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(`Erreur du serveur (${response.status}) : ${text}`);
-                });
-            }
-            return response.text();
-        })
-        .then(data => {
-            alert(`Craft lancé avec succès ! Réponse : ${data}`);
-            nbRessourceFour = 0;
-            document.getElementById("ressourceFour").textContent = nbRessourceFour;
-            // Recharger l'inventaire pour refléter la consommation et la production
-            reloadInventaire(); // Assurez-vous que cette fonction existe
-        })
-        .catch(error => {
-            alert(`Échec du craft : ${error.message}`);
-            console.error('Détails de l\'erreur de craft :', error);
-        });
-}
-
-// Fonction pour charger l'API YouTube IFrame Player de manière asynchrone
-function loadYoutubeAPI() {
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-}
-
-// Appeler cette fonction une fois que le DOM est chargé pour charger l'API YouTube
-document.addEventListener('DOMContentLoaded', () => {
-    loadYoutubeAPI();
-    // Recharger l'inventaire au chargement de la page
-    reloadInventaire();
-
-    // Assurez-vous que les éléments de sélection du four existent avant d'attacher les écouteurs
-    const selectRessourceFour1 = document.getElementById("selectRessourceFour1");
-    if (selectRessourceFour1) {
-        selectRessourceFour1.addEventListener("change", changerRessourceFour);
-        changerRessourceFour(); // Appeler une fois pour initialiser
-    }
-
-    const selectRessourceFour2 = document.getElementById("selectRessourceFour2");
-    if (selectRessourceFour2) {
-        selectRessourceFour2.addEventListener("change", changerRessourceFour2);
-    }
-});
-
-// onYouTubeIframeAPIReady est appelée automatiquement par l'API YouTube
-// une fois qu'elle est prête.
-function onYouTubeIframeAPIReady() {
-    console.log("API YouTube IFrame Player est prête.");
-    // Vous pouvez initialiser votre player ici si vous voulez qu'il soit prêt au chargement de la page,
-    // ou laisser playYoutubeSound le créer dynamiquement quand il est appelé.
 }
