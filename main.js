@@ -273,9 +273,10 @@ function lancerCuisson() {
             console.log(`Échec du craft : ${error.message}`);
             console.error('Détails de l\'erreur de craft :', error);
         })
-        .finally(() => {
+        .finally(async () => {
             // Cette partie s'exécute TOUJOURS, que la promesse soit résolue ou rejetée.
             // C'est l'endroit idéal pour réactiver le bouton.
+            await new Promise(resolve => setTimeout(resolve, 1000));
             if (cuissonBtn) {
                 cuissonBtn.disabled = false;
                 cuissonBtn.textContent = 'Faire cuire'; // Restaurer le texte original
