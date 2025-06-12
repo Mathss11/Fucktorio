@@ -228,44 +228,14 @@ function ajouterPierre() {
 function changerRessourceFour() {
     const selectElement1 = document.getElementById("selectRessourceFour1");
     ressourceFourSelectionnee1 = selectElement1.value;
-    document.getElementById("ressourceFour").textContent = nbRessourceFour;
 }
 
 // Lance le processus de cuisson/crafting
 function lancerCuisson() {
     let urlAPI;
-    let nomRessource1 = encodeURIComponent(ressourceFourSelectionnee1);
-
-
-    switch (nomRessource1) {
-        case "Lingot d'Acier":
-            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Lingot de Fer")}/${encodeURIComponent("Charbon")}/1`;
-            break;
-        case "Charbon":
-            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Bois")}/1`;
-            break;
-        case "Lingot de Fer":
-            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Fer Brut")}/1`;
-            break;
-        case "Lingot de Zinc":
-            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Zinc Brut")}/1`;
-            break;
-        case "Lingot de Cuivre":
-            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Cuivre Brut")}/1`;
-            break;
-        case "Lingot d'Or":
-            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Or Brut")}/1`;
-            break;
-        default:
-            // Cas par défaut si aucune option spécifique n'est trouvée,
-            // ce qui ne devrait pas arriver si toutes les options de selectRessourceFour1 sont couvertes.
-            // Si d'autres crafts simples existent, ils peuvent être gérés ici.
-            console.warn(`Aucune recette spécifique trouvée pour ${ressourceFourSelectionnee1}. Utilisation de la recette générique.`);
-            break;
-    }
-
+    let nomRessource1 = document.getElementById("selectRessourceFour1").value;
+    urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent(nomRessource1)}/1`;
     console.log(`Lancement du four avec URL : ${urlAPI}`);
-
     fetch(urlAPI, {
         method: "GET" // Reste en GET selon votre API
     })
