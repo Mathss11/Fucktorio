@@ -183,6 +183,45 @@ function reloadInventaire() {
     });
 }
 
+function affichageEnergie() {
+    const energieSpan = document.getElementById("energie-dispo");
+    if (!energieSpan) {
+        console.error("L'élément 'energie-dispo' est introuvable dans le DOM.");
+        return;
+    }
+
+    try {
+        const response = fetch(`${API_BASE_URL}AffichageEnergie`); // Utilise ton API_BASE_URL
+        if (!response.ok) {
+            const errorText =  response.text();
+            throw new Error(`Erreur HTTP: ${response.status} - ${errorText}`);
+        }
+
+        // --- IMPORTANT: Adapte cette partie selon le format de la réponse de ton API ---
+        // Option 1: Si l'API retourne juste un nombre (ex: "100")
+        const energie =  response.text();
+        // Option 2: Si l'API retourne un JSON avec une propriété 'energie' (ex: {"energie": 100})
+        // const data = await response.json();
+        // const energie = data.energie;
+        // Option 3: Si l'API retourne un JSON avec une propriété 'quantite' (comme pour les ressources)
+        // const data = await response.json();
+        // const energie = data.quantite;
+        // -----------------------------------------------------------------------------
+
+        energieSpan.textContent = energie; // Affiche l'énergie récupérée
+        console.log("Énergie mise à jour :", energie);
+
+    } catch (error) {
+        console.error("Erreur lors de la récupération de l'énergie :", error);
+        energieSpan.textContent = "N/A"; // Affiche une erreur si la récupération échoue
+    }
+}
+function refreshAllData() {
+    reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
+    affichageEnergie();  // Appelle la fonction pour rafraîchir l'énergie
+    console.log("Données (inventaire et énergie) rafraîchies via le bouton d'actualisation.");
+}
+
 function ajouterBois() {
     fetch("http://localhost:8080/API/ajouter/ressource/Bois", {
         method: "POST"
@@ -295,22 +334,15 @@ function loadYoutubeAPI() {
 // Appeler cette fonction une fois que le DOM est chargé pour charger l'API YouTube
 document.addEventListener('DOMContentLoaded', () => {
     loadYoutubeAPI();
-    // Recharger l'inventaire au chargement de la page
-    reloadInventaire();
+    // Recharger l'inventaire et l'energie au chargement de la page
+    refreshAllData();
 
     const selectRessourceFour1 = document.getElementById("selectRessourceFour1");
     if (selectRessourceFour1) {
         // Appelle la fonction pour initialiser l'état du bouton au chargement de la page
         updateCuissonButtonState();
-
-        // Ajoute un écouteur d'événement pour mettre à jour l'état du bouton chaque fois que la sélection change
         selectRessourceFour1.addEventListener('change', updateCuissonButtonState);
-
-        // Si tu as une fonction changerRessourceFour() qui dépend de ce select, tu peux la garder ici :
-        // selectRessourceFour1.addEventListener("change", changerRessourceFour);
-        // changerRessourceFour(); // Appel initial si nécessaire
     }
-
     // ... (Le reste de tes event listeners pour les autres éléments) ...
 });
 
