@@ -565,7 +565,7 @@ async function lancerCuissonAutomatique(module, itemToCraft, moduleStockDisplayE
 
         const newStock = await getResourceStock(itemToCraft);
         moduleStockDisplayElement.textContent = `Stock: ${newStock}`; // Utilisation du paramètre
-        reloadInventaire();
+        //reloadInventaire();
     } catch (error) {
         console.log(`Échec du craft automatique de ${itemToCraft}: ${error.message}`);
         console.error('Détails de l\'erreur de craft automatique :', error);

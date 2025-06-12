@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="30e72f84-6f96-4ee8-a35b-40205da8b3be" name="Changes" comment="plein de chose">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fucktorio.html" beforeDir="false" afterPath="$PROJECT_DIR$/Fucktorio.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +87,7 @@
       <workItem from="1749040314765" duration="73000" />
       <workItem from="1749040889033" duration="338000" />
       <workItem from="1749042520314" duration="2611000" />
-      <workItem from="1749539943331" duration="34878000" />
+      <workItem from="1749539943331" duration="36933000" />
     </task>
     <task id="LOCAL-00001" summary="Base">
       <option name="closed" value="true" />
@@ -243,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749649577992</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="plein de chose">
+      <option name="closed" value="true" />
+      <created>1749653664993</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1749653664995</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
