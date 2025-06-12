@@ -189,7 +189,6 @@ function affichageEnergie() {
         console.error("L'élément 'energie-dispo' est introuvable dans le DOM.");
         return;
     }
-
     try {
         const response = fetch(`${API_BASE_URL}AffichageEnergie`); // Utilise ton API_BASE_URL
         if (!response.ok) {
@@ -199,15 +198,7 @@ function affichageEnergie() {
 
         // --- IMPORTANT: Adapte cette partie selon le format de la réponse de ton API ---
         // Option 1: Si l'API retourne juste un nombre (ex: "100")
-        //const energie =  response.text();
-        // Option 2: Si l'API retourne un JSON avec une propriété 'energie' (ex: {"energie": 100})
-        //const data = await response.json();
-        // const energie = data.energie;
-        // Option 3: Si l'API retourne un JSON avec une propriété 'quantite' (comme pour les ressources)
-        const data = response.json();
-        const energie = data.quantite;
-        // -----------------------------------------------------------------------------
-
+        const energie =  response.text();
         energieSpan.textContent = energie; // Affiche l'énergie récupérée
         console.log("Énergie mise à jour :", energie);
 
