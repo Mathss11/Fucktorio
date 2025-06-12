@@ -224,14 +224,32 @@ function ajouterPierre() {
 
 // --- Fonctions du Four ---
 
-// Gère le changement de la PREMIÈRE ressource (selectRessourceFour1)
-function changerRessourceFour() {
-    const selectElement1 = document.getElementById("selectRessourceFour1");
-    ressourceFourSelectionnee1 = selectElement1.value;
+// Fonction pour mettre à jour l'état du bouton "Faire cuire" du four manuel
+function updateCuissonButtonState() {
+    const selectElement = document.getElementById("selectRessourceFour1");
+    const cuissonBtn = document.getElementById('lancerCuissonBtn');
+
+    if (selectElement && cuissonBtn) {
+        // Désactive le bouton si l'option vide est sélectionnée
+        // ou si le bouton est déjà en cours de "Cuisson..."
+        if (selectElement.value === "" || cuissonBtn.textContent === 'Cuisson...') {
+            cuissonBtn.disabled = true;
+        } else {
+            // Active le bouton si une option de craft valide est sélectionnée
+            cuissonBtn.disabled = false;
+        }
+    }
 }
 
 // Lance le processus de cuisson/crafting
 function lancerCuisson() {
+    // 1. Récupère le bouton par son ID
+    const cuissonBtn = document.getElementById('lancerCuissonBtn'); // Assure-toi que ton bouton HTML a bien cet ID
+    // 2. Désactive le bouton immédiatement
+    if (cuissonBtn) {
+        cuissonBtn.disabled = true;
+        cuissonBtn.textContent = 'Cuisson...'; // Optionnel: Changer le texte
+    }
     let urlAPI;
     let nomRessource1 = document.getElementById("selectRessourceFour1").value;
     urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent(nomRessource1)}/1`;
@@ -254,6 +272,14 @@ function lancerCuisson() {
         .catch(error => {
             console.log(`Échec du craft : ${error.message}`);
             console.error('Détails de l\'erreur de craft :', error);
+        })
+        .finally(() => {
+            // Cette partie s'exécute TOUJOURS, que la promesse soit résolue ou rejetée.
+            // C'est l'endroit idéal pour réactiver le bouton.
+            if (cuissonBtn) {
+                cuissonBtn.disabled = false;
+                cuissonBtn.textContent = 'Faire cuire'; // Restaurer le texte original
+            }
         });
 }
 
@@ -271,17 +297,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Recharger l'inventaire au chargement de la page
     reloadInventaire();
 
-    // Assurez-vous que les éléments de sélection du four existent avant d'attacher les écouteurs
     const selectRessourceFour1 = document.getElementById("selectRessourceFour1");
     if (selectRessourceFour1) {
-        selectRessourceFour1.addEventListener("change", changerRessourceFour);
-        changerRessourceFour(); // Appeler une fois pour initialiser
+        // Appelle la fonction pour initialiser l'état du bouton au chargement de la page
+        updateCuissonButtonState();
+
+        // Ajoute un écouteur d'événement pour mettre à jour l'état du bouton chaque fois que la sélection change
+        selectRessourceFour1.addEventListener('change', updateCuissonButtonState);
+
+        // Si tu as une fonction changerRessourceFour() qui dépend de ce select, tu peux la garder ici :
+        // selectRessourceFour1.addEventListener("change", changerRessourceFour);
+        // changerRessourceFour(); // Appel initial si nécessaire
     }
 
-    const selectRessourceFour2 = document.getElementById("selectRessourceFour2");
-    if (selectRessourceFour2) {
-        selectRessourceFour2.addEventListener("change", changerRessourceFour2);
-    }
+    // ... (Le reste de tes event listeners pour les autres éléments) ...
 });
 
 // onYouTubeIframeAPIReady est appelée automatiquement par l'API YouTube
