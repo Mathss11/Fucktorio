@@ -143,7 +143,7 @@ h1 {
 /* FOUR ZONE (DU JEU PRINCIPAL) - INCHANGÉS         */
 /* ======================= */
 
-.four-zone {
+.four-zone,.crafter-zone {
     background: rgba(70, 65, 42, 0.90);
     border-radius: 20px;
     padding: 20px 18px;
@@ -156,14 +156,14 @@ h1 {
     border: 1.2px solid #857b57bb;
 }
 
-.four-zone .inv-icon {
+.four-zone .inv-icon, .crafter-zone .inv-icon{
     width: 44px;
     height: 44px;
     margin-bottom: 7px;
     filter: drop-shadow(0 0 8px #aa8);
 }
 
-.four-section {
+.four-section, .crafter-section {
     margin: 12px 0;
     display: flex;
     align-items: center;

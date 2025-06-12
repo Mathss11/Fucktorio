@@ -55,13 +55,33 @@
                 <option value="Charbon">Charbon</option>
             </select>
 
-            <button class="stock-btn" onclick="modifierRessourceFour(-1)">-</button>
-            <span id="ressourceFour">0</span>
-            <button class="stock-btn" onclick="modifierRessourceFour(1)">+</button>
+
             <button class="action-btn" onclick="lancerCuisson()">Faire cuire</button>
         </div>
     </div>
-</div> <div class="module-builder-container"> <h2>Constructeur de Chaînes</h2>
+
+    <div class="crafter-zone">
+        <img src="https://cdn-icons-gif.flaticon.com/10606/10606591.gif" class="inv-icon" alt="Atelier">
+        <div>
+            <strong>Atelier Basique</strong>
+        </div>
+        <div class="crafter-section">
+            <span>À crafter :</span>
+            <select id="selectRessourceCrafter1">
+                <option value="">-- Sélectionner un craft --</option>
+                <option value="Plaque de Fer">Plaque de Fer</option>
+                <option value="Vis">Vis</option>
+                <option value="Fil de Cuivre">Fil de Cuivre</option>
+                <option value="Cables basiques">Câbles Basiques</option>
+                <option value="Plastique">Plastique</option>
+            </select>
+
+            <button class="action-btn" id="lancerCrafterBtn">Crafter</button>
+        </div>
+    </div>
+
+</div>
+    <div class="module-builder-container"> <h2>Constructeur de Chaînes</h2>
     <div id="toolbar">
         <button id="btn-construire">Construire</button>
         <div id="menu-types" class="hidden">
