@@ -2,7 +2,7 @@ window.onload = reloadInventaire;
 // Liste des noms de ressources
 const ressourcesNoms = [
     "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium raffiné", "Dechets Radioactifs", "Plutonium",
-    "Or Brut", "Lingot d'or", "Fil d'or", "Cables avancés", "Transformateur", "Batteries", "Bois",
+    "Or Brut", "Lingot d'Or", "Fil d'or", "Cables avancés", "Transformateur", "Batteries", "Bois",
     "Caoutchouc", "Cuivre Brut", "Lingot de Cuivre", "Fil de Cuivre", "Cables basiques", "Pétrole",
     "Plastique", "Fer Brut", "Lingot de Fer", "Plaque de Fer", "Vis", "Pierre Brute", "Silice",
     "Circuit Imprimé", "Charbon", "Lingot d'Acier", "Plaque Renforcée", "Coque Électronique", "MOAB"
