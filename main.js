@@ -227,62 +227,41 @@ function ajouterPierre() {
 // Gère le changement de la PREMIÈRE ressource (selectRessourceFour1)
 function changerRessourceFour() {
     const selectElement1 = document.getElementById("selectRessourceFour1");
-    const selectElement2 = document.getElementById("selectRessourceFour2");
-
     ressourceFourSelectionnee1 = selectElement1.value;
-
-    // Logique pour afficher/cacher la seconde liste déroulante
-    if (ressourceFourSelectionnee1 === "Lingot de Fer") {
-        selectElement2.style.display = "inline-block"; // Affiche la seconde liste
-        // On initialise la deuxième ressource sur "Charbon" si elle est visible
-        ressourceFourSelectionnee2 = selectElement2.value;
-    } else {
-        selectElement2.style.display = "none"; // Cache la seconde liste
-        ressourceFourSelectionnee2 = null; // Réinitialise la seconde ressource
-    }
-
-    // Réinitialise la quantité et l'affichage quand la première ressource change
-    nbRessourceFour = 0;
-    document.getElementById("ressourceFour").textContent = nbRessourceFour;
-}
-
-// Gère le changement de la SECONDE ressource (selectRessourceFour2)
-function changerRessourceFour2() {
-    const selectElement2 = document.getElementById("selectRessourceFour2");
-    ressourceFourSelectionnee2 = selectElement2.value;
-    // On ne réinitialise pas la quantité ici, elle est liée au craft en cours.
-}
-
-function modifierRessourceFour(val) {
-    nbRessourceFour += val;
-    if (nbRessourceFour < 0) {
-        nbRessourceFour = 0;
-    }
     document.getElementById("ressourceFour").textContent = nbRessourceFour;
 }
 
 // Lance le processus de cuisson/crafting
 function lancerCuisson() {
-    if (nbRessourceFour <= 0) {
-        alert("Veuillez sélectionner une quantité à crafter.");
-        return;
-    }
-
     let urlAPI;
     let nomRessource1 = encodeURIComponent(ressourceFourSelectionnee1);
-    let nomRessource2 = ressourceFourSelectionnee2 ? encodeURIComponent(ressourceFourSelectionnee2) : null;
-    let nombreDeCraft = nbRessourceFour;
 
-    // Vérifie si c'est un craft à double entrée (Lingot de Fer + Charbon)
-    if (ressourceFourSelectionnee1 === "Lingot de Fer" && ressourceFourSelectionnee2 === "Charbon") {
-        // Appelle le nouvel endpoint pour les deux ressources
-        // Il est crucial que votre API gère les deux ressources dans cet ordre ou de manière agnostique
-        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nomRessource2}/${nombreDeCraft}`;
-        // Note: Vous devrez créer cet endpoint dans votre Spring Boot !
-        // @GetMapping("/utiliserFourDoubleEntree/{ressource1}/{ressource2}/{nombreDeCraft}")
-    } else {
-        // Sinon, c'est un craft simple comme avant
-        urlAPI = `http://localhost:8080/API/utiliserFour/${nomRessource1}/${nombreDeCraft}`;
+
+    switch (nomRessource1) {
+        case "Lingot d'Acier":
+            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Lingot de Fer")}/${encodeURIComponent("Charbon")}/1`;
+            break;
+        case "Charbon":
+            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Bois")}/1`;
+            break;
+        case "Lingot de Fer":
+            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Fer Brut")}/1`;
+            break;
+        case "Lingot de Zinc":
+            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Zinc Brut")}/1`;
+            break;
+        case "Lingot de Cuivre":
+            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Cuivre Brut")}/1`;
+            break;
+        case "Lingot d'Or":
+            urlAPI = `${API_BASE_URL}utiliserFour/${encodeURIComponent("Or Brut")}/1`;
+            break;
+        default:
+            // Cas par défaut si aucune option spécifique n'est trouvée,
+            // ce qui ne devrait pas arriver si toutes les options de selectRessourceFour1 sont couvertes.
+            // Si d'autres crafts simples existent, ils peuvent être gérés ici.
+            console.warn(`Aucune recette spécifique trouvée pour ${ressourceFourSelectionnee1}. Utilisation de la recette générique.`);
+            break;
     }
 
     console.log(`Lancement du four avec URL : ${urlAPI}`);
@@ -300,9 +279,6 @@ function lancerCuisson() {
         })
         .then(data => {
             console.log(`Craft lancé avec succès ! Réponse : ${data}`);
-            nbRessourceFour = 0;
-            document.getElementById("ressourceFour").textContent = nbRessourceFour;
-            // Recharger l'inventaire pour refléter la consommation et la production
             reloadInventaire(); // Assurez-vous que cette fonction existe
         })
         .catch(error => {
