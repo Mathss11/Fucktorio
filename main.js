@@ -190,7 +190,7 @@ function affichageEnergie() {
         return;
     }
     try {
-        const response = fetch(`${API_BASE_URL}AffichageEnergie`); // Utilise ton API_BASE_URL
+        const response = fetch(`http://localhost:8080/API/AffichageEnergie`); // Utilise ton API_BASE_URL
         if (!response.ok) {
             const errorText =  response.text();
             throw new Error(`Erreur HTTP: ${response.status} - ${errorText}`);
