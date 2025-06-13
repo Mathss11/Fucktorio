@@ -1,4 +1,5 @@
 window.onload = refreshAllData;
+window.onload = initializeScierieButtonState;
 // Liste des noms de ressources
 const ressourcesNoms = [
     "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium raffiné", "Dechets Radioactifs", "Plutonium",
@@ -437,26 +438,32 @@ async function initializeScierieButtonState() {
 
     try {
         // Appelle l'API pour connaître le nombre de scieries déjà possédées
-        const response = await fetch(`${API_BASE_URL}QuantitéScierie`);
+        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
         if (!response.ok) {
             throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
         }
-        const nombreScieries = parseInt(await response.text(), 10); // L'API renvoie le nombre en texte brut
-        console.log(nombreScieries)
+        const nombreScieries = parseInt(await response.text(), 10);
+        console.log("Nombre de scieries initial :", nombreScieries);
+
         if (nombreScieries > 0) {
             // S'il y a déjà des scieries, le bouton doit permettre de les contrôler
-            scierieBtn.textContent = 'Scierie pause'; // Ou 'Scierie en pause' si tu veux un état initial spécifique
+            // On le met en 'active' car on va démarrer la production immédiatement
+            scierieBtn.textContent = 'Scierie active'; // <--- CORRECTION ICI : METTRE "active"
             scierieBtn.onclick = toggleScierieProduction; // Le clic basculera la production
             scierieBtn.disabled = false;
-            // Démarrer la production si des scieries existent et devraient être actives par défaut au chargement
-            if (scierieIntervalId) clearInterval(scierieIntervalId); // Au cas où
-            scierieIntervalId = setInterval(performScierieOperation, 1000);
+
+            // S'assurer que l'intervalle est arrêté avant d'en démarrer un nouveau
+            if (scierieIntervalId) clearInterval(scierieIntervalId);
+            scierieIntervalId = setInterval(performScierieOperation, 1000); // Démarre la production
             console.log(`Initialisation: ${nombreScieries} scierie(s) trouvée(s). Production démarrée.`);
         } else {
             // Aucune scierie n'existe, le bouton doit proposer d'en placer une
             scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
             scierieBtn.onclick = ajouterScierie; // Le clic lancera la fonction de placement
             scierieBtn.disabled = false; // Assure que le bouton est actif
+            // S'assurer qu'aucun intervalle ne tourne si aucune scierie n'est présente
+            if (scierieIntervalId) clearInterval(scierieIntervalId);
+            scierieIntervalId = null;
         }
     } catch (error) {
         console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
@@ -467,8 +474,7 @@ async function initializeScierieButtonState() {
 
 function refreshAllData() {
     reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
-    affichageEnergie();  // Appelle la fonction pour rafraîchir l'énergie
-    ajouterScierie();
+    affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
     console.log("Données rafraîchies via le bouton d'actualisation.");
 }
 
