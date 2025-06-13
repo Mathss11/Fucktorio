@@ -183,28 +183,30 @@ function reloadInventaire() {
     });
 }
 
-function affichageEnergie() {
+async function affichageEnergie() { // <-- AJOUTE async ici pour pouvoir utiliser await
     const energieSpan = document.getElementById("energie-dispo");
     if (!energieSpan) {
         console.error("L'élément 'energie-dispo' est introuvable dans le DOM.");
         return;
     }
+
     try {
-        const response = fetch(`http://localhost:8080/API/AffichageEnergie`); // Utilise ton API_BASE_URL
+        const response = await fetch(`${API_BASE_URL}AffichageEnergie`); // <-- AJOUTE await ici
+        // Utilise ton API_BASE_URL
         if (!response.ok) {
-            const errorText =  response.text();
+            const errorText = await response.text(); // <-- AJOUTE await ici
             throw new Error(`Erreur HTTP: ${response.status} - ${errorText}`);
         }
 
-        // --- IMPORTANT: Adapte cette partie selon le format de la réponse de ton API ---
-        // Option 1: Si l'API retourne juste un nombre (ex: "100")
-        const energie =  response.text();
-        energieSpan.textContent = energie; // Affiche l'énergie récupérée
+        const energie = await response.text(); // <-- AJOUTE await ici
+        energieSpan.textContent = energie;
+        // Affiche l'énergie récupérée
         console.log("Énergie mise à jour :", energie);
 
     } catch (error) {
-        console.error("Erreur lors de la récupération de l'énergie :", error);
-        energieSpan.textContent = "N/A"; // Affiche une erreur si la récupération échoue
+        console.error("Erreur lors de la récupération de l'énergie :", error); // Cette erreur sera maintenant plus précise
+        energieSpan.textContent = "N/A";
+        // Affiche une erreur si la récupération échoue
     }
 }
 function refreshAllData() {
