@@ -427,7 +427,7 @@ async function ajouterScierie() {
         } else {
             // Si l'API de placement a répondu OK (status 200) mais que la quantité de scieries est toujours 0,
             // cela indique un problème logique côté serveur (ex: ressources insuffisantes non gérées par un code d'erreur HTTP spécifique).
-            throw new Error("L'API de placement a répondu OK, mais le nombre de scieries n'a pas augmenté. Vérifiez les conditions côté serveur (ressources, etc.).");
+            throw new Error("Le nombre de scieries n'a pas augmenté. Vérifiez (ressources/énergie)");
         }
     } catch (error) {
         console.error("Échec du placement de la scierie :", error.message);
