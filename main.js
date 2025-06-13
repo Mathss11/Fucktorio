@@ -324,29 +324,22 @@ async function performScierieOperation() {
 
         const successMessage = await response.text();
         console.log("Scierie a tourné :", successMessage);
-        const nomRessource = "bois"; // La ressource spécifique que nous voulons rafraîchir
-
-        // Le nom de la ressource "bois" générera l'ID "bois"
-        const idGenere = nomRessource.toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9]/g, "");
-
-        fetch(`http://localhost:8080/API/quantite/${nomRessource}`)
+        fetch(`http://localhost:8080/API/quantite/Bois`)
             .then(resp => resp.text())
             .then(qte => {
-                const spanElement = document.getElementById(idGenere);
+                const spanElement = document.getElementById('Bois');
                 if (spanElement) {
                     spanElement.textContent = qte;
                 } else {
-                    console.warn(`Élément HTML avec l'ID '${idGenere}' introuvable pour la ressource '${nomRessource}'.`);
+                    console.warn(`Élément HTML avec l'ID Bois introuvable pour la ressource Bois.`);
                 }
             })
             .catch(error => {
-                const spanElement = document.getElementById(idGenere);
+                const spanElement = document.getElementById("Bois");
                 if (spanElement) {
                     spanElement.textContent = "?"; // Affiche un "?" en cas d'erreur
                 } else {
-                    console.error(`Erreur de chargement pour '${nomRessource}' et élément avec l'ID '${idGenere}' introuvable.`, error);
+                    console.error(`Erreur de chargement pour Bois et élément avec l'ID Bois introuvable.`, error);
                 }
             });
         //affichageEnergie();
