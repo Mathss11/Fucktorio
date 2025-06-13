@@ -391,30 +391,44 @@ async function ajouterScierie() {
     scierieBtn.textContent = 'Placement en cours...';
 
     try {
-        const response = await fetch(`${API_BASE_URL}PlacerScierie`, {
+        // Étape 1 : Appel pour placer la scierie
+        const placementResponse = await fetch(`${API_BASE_URL}PlacerScierie`, {
             method: 'GET' // Ou 'POST', selon ton API Spring Boot pour PlacerScierie
         });
 
-        if (!response.ok) {
-            const errorData = await response.text();
-            throw new Error(`Erreur API Placement de Scierie: ${response.status} - ${errorData}`);
+        if (!placementResponse.ok) {
+            const errorData = await placementResponse.text();
+            throw new Error(`Erreur API Placement de Scierie: ${placementResponse.status} - ${errorData}`);
         }
 
-        console.log("Scierie placée avec succès !");
+        // Étape 2 : Vérifier si la quantité de scieries a bien augmenté APRÈS l'appel de placement
+        const quantiteResponse = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
+        if (!quantiteResponse.ok) {
+            throw new Error(`Erreur API lors de la vérification de la quantité de scieries après placement: ${quantiteResponse.status}`);
+        }
+        const nouvelleQuantiteScieries = parseInt(await quantiteResponse.text(), 10);
+        console.log("Nouvelle quantité de scieries après tentative de placement :", nouvelleQuantiteScieries);
 
-        // Transition de l'état du bouton après un placement réussi
-        scierieBtn.textContent = 'Scierie active'; // Le texte devient "Scierie active"
-        scierieBtn.onclick = toggleScierieProduction; // Le prochain clic appellera toggleScierieProduction
-        scierieBtn.disabled = false; // Réactive le bouton
+        // La vérification : si la nouvelle quantité est > 0 (si l'API PlacerScierie ajoute 1, elle devrait être > 0)
+        // Ou si tu avais 0 avant et tu as maintenant 1, tu peux faire un fetch de la quantité AVANT aussi pour une vérification plus stricte
+        if (nouvelleQuantiteScieries > 0) { // Si tu gères une seule scierie et que ça passe de 0 à 1
+            console.log("Scierie placée avec succès !");
+            // Transition de l'état du bouton après un placement réussi
+            scierieBtn.textContent = 'Scierie active'; // Le texte devient "Scierie active"
+            scierieBtn.onclick = toggleScierieProduction; // Le prochain clic appellera toggleScierieProduction
+            scierieBtn.disabled = false; // Réactive le bouton
+            // Démarrer la production automatique immédiatement après placement
+            if (scierieIntervalId) clearInterval(scierieIntervalId);
+            scierieIntervalId = setInterval(performScierieOperation, 1000); // Lance l'intervalle AVEC LA NOUVELLE FONCTION
+            console.log("Production de bois automatique démarrée.");
 
-        // Démarrer la production automatique immédiatement après placement
-        if (scierieIntervalId) clearInterval(scierieIntervalId);
-        scierieIntervalId = setInterval(performScierieOperation, 1000); // Lance l'intervalle AVEC LA NOUVELLE FONCTION
-        console.log("Production de bois automatique démarrée.");
-
-        reloadInventaire(); // Rafraîchit l'inventaire pour montrer le coût
-        affichageEnergie(); // Rafraîchit l'énergie
-
+            reloadInventaire(); // Rafraîchit l'inventaire pour montrer le coût
+            affichageEnergie(); // Rafraîchit l'énergie
+        } else {
+            // Si l'API de placement a répondu OK (status 200) mais que la quantité de scieries est toujours 0,
+            // cela indique un problème logique côté serveur (ex: ressources insuffisantes non gérées par un code d'erreur HTTP spécifique).
+            throw new Error("L'API de placement a répondu OK, mais le nombre de scieries n'a pas augmenté. Vérifiez les conditions côté serveur (ressources, etc.).");
+        }
     } catch (error) {
         console.error("Échec du placement de la scierie :", error.message);
         alert("Impossible de placer la scierie : " + error.message);
