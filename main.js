@@ -309,12 +309,12 @@ function lancerCuisson() {
         });
 }
 // ==============================================================================
-// NOUVELLE FONCTION : Exécute l'opération de la scierie (remplace l'appel à ajouterBois dans l'intervalle)
+// FONCTION : Exécute l'opération de la scierie (appelée manuellement)
 // ==============================================================================
 async function performScierieOperation() {
     try {
         const response = await fetch(`${API_BASE_URL}utiliserScierie`, {
-            method: 'GET' // Utilise GET car ton endpoint @GetMapping("/utiliserScierie") est un GET
+            method: 'GET'
         });
 
         if (!response.ok) {
@@ -324,72 +324,53 @@ async function performScierieOperation() {
 
         const successMessage = await response.text();
         console.log("Scierie a tourné :", successMessage);
-        //reloadInventaire(); // Met à jour l'inventaire après chaque opération
-        //affichageEnergie(); // Met à jour l'énergie (car utiliserScierie peut consommer/produire de l'énergie)
+        reloadInventaire();
+        affichageEnergie();
     } catch (error) {
-        console.error("Erreur lors de l'opération automatique de la scierie :", error);
-        // Si la scierie ne peut plus tourner (ex: manque d'énergie/ressources), on peut arrêter l'intervalle
-        if (scierieIntervalId) {
-            clearInterval(scierieIntervalId);
-            scierieIntervalId = null; // Réinitialise l'ID de l'intervalle
-            const scierieBtn = document.getElementById('ajouterScierie');
-            if (scierieBtn) {
-                scierieBtn.textContent = 'Scierie arrêtée (erreur)'; // Affiche l'état d'erreur
-                scierieBtn.onclick = toggleScierieProduction; // Permet de tenter de relancer manuellement
-                scierieBtn.disabled = false; // Réactive le bouton pour permettre l'interaction
-            }
-            alert(`La scierie s'est arrêtée en raison d'une erreur: ${error.message}`);
-        }
+        console.error("Erreur lors de l'opération manuelle de la scierie :", error);
+        throw error;
     }
 }
 
 
 // ==============================================================================
-// FONCTION MODIFIÉE : Gère la mise en pause/reprise de la production de la scierie
+// Gère l'utilisation manuelle de la scierie
 // ==============================================================================
-function toggleScierieProduction() {
+async function manuallyUseScierie() {
     const scierieBtn = document.getElementById('ajouterScierie');
     if (!scierieBtn) {
         console.error("Bouton 'ajouterScierie' introuvable.");
         return;
     }
 
-    if (scierieIntervalId) {
-        clearInterval(scierieIntervalId);
-        scierieIntervalId = null;
-        scierieBtn.textContent = 'Scierie en pause';
-        console.log("Production de bois automatique mise en pause.");
-    } else {
-        scierieBtn.textContent = 'Utilisation en cours...';
-        scierieBtn.disabled = true;
+    scierieBtn.disabled = true;
+    const originalText = scierieBtn.textContent;
 
-        performScierieOperation().then(() => {
-            scierieBtn.textContent = 'Scierie en pause';
-            scierieBtn.disabled = false;
-            console.log("Scierie utilisée une seule fois.");
-        }).catch(error => {
-            console.error("Erreur lors de l'utilisation ponctuelle de la scierie:", error);
-            scierieBtn.textContent = 'Scierie en pause (Erreur)';
-            scierieBtn.disabled = false;
-        });
+    try {
+        await performScierieOperation();
+
+        scierieBtn.textContent = originalText;
+        scierieBtn.disabled = false;
+        console.log("Scierie utilisée manuellement (stock rafraîchi).");
+    } catch (error) {
+        console.error("Échec de l'utilisation manuelle de la scierie :", error.message);
+        alert("Impossible d'utiliser la scierie : " + error.message);
+        scierieBtn.textContent = originalText;
+        scierieBtn.disabled = false;
     }
 }
 
 
 // ==============================================================================
-// FONCTION MODIFIÉE : ajouterScierie() - DÉDIÉE AU PLACEMENT INITIAL
+// ajouterScierie() - DÉDIÉE AU PLACEMENT INITIAL
 // ==============================================================================
 async function ajouterScierie() {
     const scierieBtn = document.getElementById('ajouterScierie');
     if (!scierieBtn) return;
 
-    // Cette fonction ne devrait être appelée que pour le placement initial.
-    // Si la scierie existe déjà (ce qui est vérifié par initializeScierieButtonState()),
-    // l'onclick du bouton sera déjà changé vers toggleScierieProduction.
-    // Cette vérification est une sécurité, au cas où.
     if (scierieBtn.onclick !== ajouterScierie) {
-        console.log("La scierie semble déjà placée. Bascule la production au lieu de la placer.");
-        toggleScierieProduction();
+        console.log("La scierie semble déjà placée. Déclenche l'utilisation manuelle au lieu de la placer.");
+        manuallyUseScierie();
         return;
     }
 
@@ -398,9 +379,8 @@ async function ajouterScierie() {
     scierieBtn.textContent = 'Placement en cours...';
 
     try {
-        // Étape 1 : Appel pour placer la scierie
         const placementResponse = await fetch(`${API_BASE_URL}PlacerScierie`, {
-            method: 'GET' // Ou 'POST', selon ton API Spring Boot pour PlacerScierie
+            method: 'GET'
         });
 
         if (!placementResponse.ok) {
@@ -408,7 +388,6 @@ async function ajouterScierie() {
             throw new Error(`Erreur API Placement de Scierie: ${placementResponse.status} - ${errorData}`);
         }
 
-        // Étape 2 : Vérifier si la quantité de scieries a bien augmenté APRÈS l'appel de placement
         const quantiteResponse = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
         if (!quantiteResponse.ok) {
             throw new Error(`Erreur API lors de la vérification de la quantité de scieries après placement: ${quantiteResponse.status}`);
@@ -416,31 +395,21 @@ async function ajouterScierie() {
         const nouvelleQuantiteScieries = parseInt(await quantiteResponse.text(), 10);
         console.log("Nouvelle quantité de scieries après tentative de placement :", nouvelleQuantiteScieries);
 
-        // La vérification : si la nouvelle quantité est > 0 (si l'API PlacerScierie ajoute 1, elle devrait être > 0)
-        // Ou si tu avais 0 avant et tu as maintenant 1, tu peux faire un fetch de la quantité AVANT aussi pour une vérification plus stricte
-        if (nouvelleQuantiteScieries > 0) { // Si tu gères une seule scierie et que ça passe de 0 à 1
+        if (nouvelleQuantiteScieries > 0) {
             console.log("Scierie placée avec succès !");
-            // Transition de l'état du bouton après un placement réussi
-            scierieBtn.textContent = 'Scierie active'; // Le texte devient "Scierie active"
-            scierieBtn.onclick = toggleScierieProduction; // Le prochain clic appellera toggleScierieProduction
-            scierieBtn.disabled = false; // Réactive le bouton
-            // Démarrer la production automatique immédiatement après placement
-            if (scierieIntervalId) clearInterval(scierieIntervalId);
-            scierieIntervalId = setInterval(performScierieOperation, 1000); // Lance l'intervalle AVEC LA NOUVELLE FONCTION
-            console.log("Production de bois automatique démarrée.");
-
-            reloadInventaire(); // Rafraîchit l'inventaire pour montrer le coût
-            affichageEnergie(); // Rafraîchit l'énergie
+            scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
+            scierieBtn.onclick = manuallyUseScierie;
+            scierieBtn.disabled = false;
+            reloadInventaire();
+            affichageEnergie();
         } else {
-            // Si l'API de placement a répondu OK (status 200) mais que la quantité de scieries est toujours 0,
-            // cela indique un problème logique côté serveur (ex: ressources insuffisantes non gérées par un code d'erreur HTTP spécifique).
-            throw new Error("Le nombre de scieries n'a pas augmenté. Vérifiez (ressources/énergie)");
+            throw new Error("L'API de placement a répondu OK, mais le nombre de scieries n'a pas augmenté. Vérifiez les conditions côté serveur.");
         }
     } catch (error) {
         console.error("Échec du placement de la scierie :", error.message);
         alert("Impossible de placer la scierie : " + error.message);
         scierieBtn.disabled = false;
-        scierieBtn.textContent = originalText; // Restaure le texte original
+        scierieBtn.textContent = originalText;
         reloadInventaire();
         affichageEnergie();
     }
@@ -448,7 +417,7 @@ async function ajouterScierie() {
 
 
 // ==============================================================================
-// NOUVELLE FONCTION : Initialise l'état du bouton Scierie au chargement de la page
+// Initialise l'état du bouton Scierie au chargement de la page
 // ==============================================================================
 async function initializeScierieButtonState() {
     const scierieBtn = document.getElementById('ajouterScierie');
@@ -458,7 +427,6 @@ async function initializeScierieButtonState() {
     }
 
     try {
-        // Appelle l'API pour connaître le nombre de scieries déjà possédées
         const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
         if (!response.ok) {
             throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
@@ -467,34 +435,23 @@ async function initializeScierieButtonState() {
         console.log("Nombre de scieries initial :", nombreScieries);
 
         if (nombreScieries > 0) {
-            // S'il y a déjà des scieries, le bouton doit permettre de les contrôler
-            // On le met en 'active' car on va démarrer la production immédiatement
-            scierieBtn.textContent = 'Scierie active'; // <--- CORRECTION ICI : METTRE "active"
-            scierieBtn.onclick = toggleScierieProduction; // Le clic basculera la production
+            scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
+            scierieBtn.onclick = manuallyUseScierie;
             scierieBtn.disabled = false;
-
-            // S'assurer que l'intervalle est arrêté avant d'en démarrer un nouveau
-            if (scierieIntervalId) clearInterval(scierieIntervalId);
-            scierieIntervalId = setInterval(performScierieOperation, 1000); // Démarre la production
-            console.log(`Initialisation: ${nombreScieries} scierie(s) trouvée(s). Production démarrée.`);
         } else {
-            // Aucune scierie n'existe, le bouton doit proposer d'en placer une
             scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
-            scierieBtn.onclick = ajouterScierie; // Le clic lancera la fonction de placement
-            scierieBtn.disabled = false; // Assure que le bouton est actif
-            // S'assurer qu'aucun intervalle ne tourne si aucune scierie n'est présente
-            if (scierieIntervalId) clearInterval(scierieIntervalId);
-            scierieIntervalId = null;
+            scierieBtn.onclick = ajouterScierie;
+            scierieBtn.disabled = false;
         }
     } catch (error) {
         console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
-        scierieBtn.textContent = 'Scierie Indispo (Erreur)'; // Indique un problème
-        scierieBtn.disabled = true; // Désactive le bouton si l'état ne peut pas être vérifié
+        scierieBtn.textContent = 'Scierie Indispo (Erreur)';
+        scierieBtn.disabled = true;
     }
 }
 
 function refreshAllData() {
-    toggleScierieProduction(),
+    manuallyUseScierie();
     reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
     affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
     console.log("Données rafraîchies via le bouton d'actualisation.");
