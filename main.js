@@ -313,37 +313,42 @@ function lancerCuisson() {
 // ==============================================================================
 // Nouvelle fonction pour rafraîchir spécifiquement la quantité de bois
 function refreshBoisQuantity() {
-    const nomRessource = "bois"; // Cible explicitement la ressource "bois"
+    const nomRessourceForAPI = "Bois"; // <-- CHANGER ICI : Majuscule pour l'API
+    const nomRessourceForID = "bois";  // <-- Reste en minuscule pour l'ID HTML
 
-    // Génère l'ID HTML pour la ressource "bois", qui sera "bois"
-    const idGenere = nomRessource.toLowerCase()
+    // L'ID HTML est toujours en minuscule pour correspondre au span
+    const idGenere = nomRessourceForID.toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-z0-9]/g, "");
 
-    // Fetche UNIQUEMENT la quantité de bois depuis l'API
-    fetch(`http://localhost:8080/API/quantite/${nomRessource}`)
-        .then(resp => resp.text())
+    // Fetche UNIQUEMENT la quantité de bois depuis l'API, en utilisant le nom correct pour l'API
+    fetch(`${API_BASE_URL}quantite/${nomRessourceForAPI}`) // Utilise nomRessourceForAPI ici
+        .then(resp => {
+            if (!resp.ok) {
+                return resp.text().then(errorText => { throw new Error(`Erreur HTTP ${resp.status}: ${errorText}`); });
+            }
+            return resp.text();
+        })
         .then(qte => {
-            // Met à jour UNIQUEMENT le <span> correspondant à l'ID "bois"
             const spanElement = document.getElementById(idGenere);
             if (spanElement) {
                 spanElement.textContent = qte;
             } else {
-                console.warn(`Élément HTML avec l'ID '${idGenere}' introuvable pour la ressource '${nomRessource}'.`);
+                console.warn(`Élément HTML avec l'ID '${idGenere}' introuvable pour la ressource '${nomRessourceForID}'.`);
             }
         })
         .catch(error => {
+            console.error(`Erreur lors du fetch ou de la mise à jour de la quantité de '${nomRessourceForID}' :`, error);
             const spanElement = document.getElementById(idGenere);
             if (spanElement) {
                 spanElement.textContent = "?";
             } else {
-                console.error(`Erreur de chargement pour '${nomRessource}' et élément avec l'ID '${idGenere}' introuvable.`, error);
+                console.error(`Élément avec l'ID '${idGenere}' introuvable lors de la gestion d'erreur.`, error);
             }
         });
 }
 
-
-// Ta fonction performScierieOperation
+// Ta fonction performScierieOperation reste inchangée, elle appellera refreshBoisQuantity
 async function performScierieOperation() {
     try {
         const response = await fetch(`${API_BASE_URL}utiliserScierie`, {
@@ -358,10 +363,7 @@ async function performScierieOperation() {
         const successMessage = await response.text();
         console.log("Scierie a tourné :", successMessage);
 
-        // <<< C'est ici que le rafraîchissement est ciblé >>>
-        refreshBoisQuantity(); // Appelle UNIQUEMENT la fonction pour le bois
-
-        // affichageEnergie(); // Gardé commenté si tu ne veux pas rafraîchir l'énergie ici
+        refreshBoisQuantity();
     } catch (error) {
         console.error("Erreur lors de l'opération manuelle de la scierie :", error);
         throw error;
