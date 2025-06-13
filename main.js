@@ -1,4 +1,4 @@
-window.onload = reloadInventaire;
+window.onload = refreshAllData;
 // Liste des noms de ressources
 const ressourcesNoms = [
     "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium raffiné", "Dechets Radioactifs", "Plutonium",
@@ -43,13 +43,10 @@ const ressourcesImages = [
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8CAgIAAACamppnZ2c6Ojp/f3/5+fni4uJlZWWurq7CwsJAQECrq6u9vb3Q0NC3t7fz8/NERETo6OgkJCTKyspVVVXg4OCLi4tNTU3a2tqkpKSFhYV4eHj19fUmJiaWlpZKSkoODg4xMTFxcXFdXV0bGxssLCwcHBxUVFSOiRo/AAARPUlEQVR4nO1d6ZqqOBDVoI1iuyDYLrji0t3v/4IjVCWE7HCl1fk4P+b2BIQcslSlqlLpdNwQxORrqSjfpmTny8XRldwSxe2LPukvFOXJjVwjudjfkXSruH35ReLAXOGqmJA70r1UvsvKr3LNzlm5THFDSJcQ+UslWflZ/lLX7DE7qThMs/KJa+Wd8Eu63a7imfea3ascisXT/Pa5dPsqL19J5fO8fCoWh/B46fZJfvuve/Ud8Jk/cywW+1CFgboKfekxH3n5h1Tez8tHYvGA5OVS247z4s8qBKwAhlLXbxmKaBkKaBk+Ei1DAS1DES1DAS3DOmgZCmgZimgZCmgZ1kHLUEDLUETLUEDLsA5ahgJahiJahgJahnXQMhTQMhTxAgzBdTKTyoGh5BcbaaoADGV/GTCU3G4RMJRuD/Ji2fFTFyPPSw75M3uegCMwXInll/z2WCxO1nn5OhEvxHn5RSxeAcOjWN7Liw/3x0jNXgeXzFeXPTLjIkJT3HR5UXz5d4IjfN5rgsiDtzK8VyZ4p+i1DK1IcoaKIfJ85BVTxUMImPx+GjCHWfS71xv21NCVV7y94mPu+IaazU3V/51kssXlS/X+uS88Hj2n3hV0Ypdx9sIMbTWPO04TyUsyHDoxJJ2v/3kbfnWW6buOw6HLOEyXnU44GxsQgA74sgxJLzBVfyYHqknwHspwsBgtIkWkXx0AwwfpNA9hGI572HV6s0eQfDmGsx8c1dk/Pw6qiA0vxnB/Ka1RCBlKAY1V0SDDaHw5zdcfkwpdLTwJizBCPhURszr4k4/1/HQJSj9pjGHUY1PxypXj/kwoMUKpkrPDPJfDX7E39jiOTTEMiirepc3G7SF9tiqPzwf6AFdT0iblX1lYwxpi6AnDSRW0LWGHlG5JFgA9SL7x/2WjmwIL4Y2MUjMMZ+JwSlXh7QICVIxOtIuFv6iOOIRqL7viAKYWv0YYhoTTlKjeZ0OUwo/W3KhdQ1Fsn1C/eGsU/IU/aoThFt9x8oJjjMLNagrCdVyfn5b20FEVplMBI3xLfAw8nI/pjxphiK+DzoXWTHkvgrKO3bJw2OCjbFPVFW6D8P4J/gguNcEQTNlsOtsRvtNo4IM9W7KXo/3H8n1gWLAtFzCisds0wRD+jumlJbxP2iZRwky3/Dq5NCJs3Cj2oMQcqyYY7gTHSl/jzeAB9iLZeYNSwNKIM8HFw7t2mmAI7ohiy8unneFIP6Ncddw5BIKLZ8V12goMfQM6R44hPJ/txgljblRocNKP1Sk0onE6hZFfCJU1942B4dFc/Qw7dytGUP7qgca3xmFjYgHVld2DHCJ4BZ3b0KE4KxjarBi7TMQ5uF6QIfrzTvBJN6kwSBTYAgn1R8AebNxmB0P9BvNReOIf52JrI/eP23W4j02FJxTekygceKiqmAaCfzDOJrdyr1fhCC9JvSiMZn3U/uCSm60t7Tg5zyjDBVWhUrpCIKmpk454+SXDs881VOUj5JBSrW1RhSGxDsOyOLsUyxj8V9qxxwPEy0030rDXGy0aY84fCn9Qp6ibVX/X8a8OFBlD/1NYyxgXQKB9GmbLXK22KO8fwhs/6feCudSCa3Z3ODAgWpXXh+G6eCEhFs15CjOhXulJVCqriSIhayY5gOEqMlXfxRgkrvH9IzRs9p+DWZ1B+fmtt1ZgN7UsE2cH9sa7+GNozhIVHU/Zu9Lr2GZoAYFnCiZYlxRrHfbja5q98nTkW7tRa2I42ET2DuDQQtDKfbtFK4w2Ypd7AXvpyC4MppqgKhe8AENooJPpFpxta2UPeAGGoHF9GyzH/uxHWDxUwPMZ+lQHmWt8XOG4T2+p46l5PsNBoYx8b6cih/1iFxeGXlfzN4/nM5zxgpp8X4IpnQyjRXKNCS/IHW3nJTyf4bGsbeVS++fcP/9wCi+9atRuNXg+wyuOMYFlmV3ZBFoJz2cIC+R1SrQLtPuV26ddpGjwfIaodkfHs5Jj1pRnL0S1oMbzn85wwCwO+9ElFfvmHfHHwkdLTi1x8XSGC75x/I3Xu3HjML4kGyAFUlORd8iKpzMEw1zMlfjLxWQWzCbT0nrQbOgwwJmhPx0ZsNjVZejZzUw5+nU1U2C4W5iqnyka0dluxKjFUHQB6NBDw249hjYzxjlCqWVBHYZXx07EG+prMLTV/FrNmlgF0Pvsykri2JtrMiQgl5tgeHAxwXRk95Iz3OyltywZXDPjEFQae6zGSJpzHeE0DjNjbDLvG/AZ15xL/dRRzm3y+9KaDElsqn1/7hA/V1cegq3a6JgCRGAzrb5CfK7E3/xi9xYtcv5e1M9C0H2qB/I9leGRqMwT0bjXP8SHfm/MtyzuYfw1hwMo8ESG0bwwTxSlG95BcuUW9TTotFchWDHD8xguCJOxBcPwQspriwvrloVzqdpK/2kMvRITLNx8S/Gl37QZue+hytKqxZMY+jvaJDzDjUJzYqE0vDPrViHt6nMY+r+sz3EMIz7gj2oRzB/PsyeK9K06PIVhyEJlexOYIvPiEyX4lSw2i+SLUgTrDJ1paE91Xe4/g2EU02om1OeSFSfIYU0VnMEaS3KNA3dLp7ShD46D8QkMB5Rgd9HhGEJgUdliuAWKeSgQ3LiMrrQZUzfR+PcMBwes4Tlzlm0YwwAIlleAEBidL+3hxk0xCzvGVv85w4gSBE97YUODcITvslqGbrWvUl6GRUopupht/pohjfolQ5gpllDxvS6kJKHGxj0XOxb1K7TiHzP06XxJ74zo2mKjjn4b0ODUiNe8/Sudb+y+mj9miAvuIiwhpHZQXRKLOdrYluX14Y5StHq+H8UwcWLoybaAFNsIHiCHtl2x80IY8A8rX+Gj+rb11FDZ+xXYrD4M2K5dGE6xVjyPGO00NoaQ6eVcXKAUbSkvgOHaVPuP1QZWAv9qp6GzzJxfqFNLr7mXzvA673xaYT+1WInd4toWdEuSGRaG9ypls8lPaTb5wmEypZNmGRGdaRQDHYWlxQTiZmvrO9pLh6ZXYWWFGZ7avPGquPYbU+IQnF5WuH9VSkIthl3yiDYEq7VomPeoSIeTI4TTK/x8v15mCP5VTBjRDy9C/oXhvQ0fMA5h1hRjYsDSGzPFu9xKONaSYkYqYeIQeepmL108YC5F2S1qIcx/CGG+ZRsF2hqzAGP1thSYaY2DA+fSrW0utcEuD7l1Eo+IzTB0bjyya0fsGis2iMX+6GDrd5aHFth1Gg1DXDPcm3ZPY7X7QUYkDM5I8LbHrTPyr50Z/oXWpmMYo0AsFII70nPKBnfeNQM1lbdg2ENx0aGTDZ0X6J/5wARhIcmFt2DoccpMIoldeljSXD2a3oIhKJy4FWEUlzgS8gOLXP+mnIjfg2HEzBMZwi3tofm/W5w8cfUoifa3YJhrAtzm0cj7Rin87TGNE5gcpN++B8OhNImEi8lssuAbDLY0ygul92B4VGpzZXxqxPZ7MFzYA/EHpbHK4T0Yhl1c5OoBRH5kF/d7MET12WSNuOgU7DdhiLvb9UEIuJNYoT2/CcMNU7410I/UN2GY51Mw7VH84BS7Mt6EITJIdR5BjCpSOUUfydAcE9W3x0QZGGLeBJ3rGjRX5Q5MZ4aWmKhx5wFxbQaGmDNCt5f7qqfhytAhru3fYxNNDHGzudrwadro7MzQVvOKu9WrMozAIKOZa2CUEk9lM3wYQ/KAGGHt6ikYMnuFqhEj5vIdBtJ1B4Zu9tLhA+K8lQyj4FoYLNTT5YpdJSQdzsot+ahxeI6yWP2JAaNLjbk0Gv9y9LpqoT4o35CR5KSK81x6GZmqL20KVKCyPAyDdZlezkBWTi/lW/Iv3mNy5WUlfii0HmFjTZSJkyJgr0TyMso/+2syjMZXkR5Z0wgNITUb+F6y8rX0SXaLUHtCxjMZBgp63rJzwiIh+wVN0ExOneXxJP7y8LF6OYal7pbTO3n57DJnMyY/FNkgBLV7eeyLP+++HsNS/frMmlYw5Cj2SJlhJ3OBxdIE9ZIMcxnkcQKcMbxfOoOOPeXCafml02b1Uyb5egyz+s298haLeYn+2hvT9Icyw+xZ2zOvKLwIw03hWTp50g6SOV4svkFJTMjL3+kHI2neHvyHMVExYTOnDPC8bA+iEkkOW90C319sM+t41xLa/ocMN+esc2rMohg2MzgLnplzNNOaMDJV8iO1pGj627i2gT7yhYav7XeEH6+7ve3UJn9pCft6+j5gBGV4H2BfTOP/yozc/3ou1aswhFgOGFDLce/0eeqNoUNDDMS69pNfhSGsvlTRTTq3kytehSE4oA6y3RvDbOrX0J1hpXxtlYGBQ/IiH1TTWnlbAK752qrl3KsOTA4pRr35Owfd2oGhzYpx9SvmTcyx9C6n/no3dtr5sb9hRb6PwewO+A/bP+K2dzQaf6z7p4tXanDXvImVrYmLE/t1zyGbBWYaImJV6JMdkiksi7MK1pyXxzX3ZaX8pbA3jRPc9qgyy1lEDvIwKb1xx2xLrvlLq+SgLXYLsDceLdWLLE8n1t3eR+GNbOeXC8M8d2WFPMJsrwD3BEtySI8NFundRXyiCdJZBUy2uuYR7lTIBU1PYuC5G3PQdjoQ7LtecT/Bn6cJRIKb0wsVOWjZG6nH1TkXtAUlif+J7+iNZwkmMjX3U3SvzTrhbLeez8FVF8/hDBd0rhm3jaJr5740m4zR9kGHbhM6DTqLcAcv9B8xgLuMXbmZYEnItunBA0xZ2TEcHMfCBhO8c7mgH8wQ83lTqZSAGdHQTcO0rJUK5wFjLmxDwA3GxtEpG9ODg4RpguGqvBoIYZAZdtLNhCBugeEGep2hkpAW5MeQk/3JefVhLlEn/i8qbNDcxDVkzbz6RvAMxXhe2PijnynweIiiEiJD7Pb6cBTRfcGnZmrufIsbvYSjQr86OPITQwaRIY5T/RoRUrsUWgHE28KwbIIhroSoBQw6rX5jCx5PwsV0SSePQ5t0tY/AXYz0E+A2DWjzJs+ZyecyH/dj63d9YMQT14slhngChN5qiGnJQcDgISwNnjPDzgr6PAZb+1lB0EC8W00+PR6aWW/5ZWcFbYMj5oNv9KygUNba9PJ6L8dhyAxRb9WP5av0xkbPe2KeWwpy08v7cVk/yCAzjEzhKBkGQsBP0esbskSVN06YcuajpbQk7GSG9LQZ/WOm3fIb2ZK0KVvbjHlZMtO8yY6kiHhSMBwZIqoAmzP3xm6hXzR3/iFbUN484+pkTiRZomAIexaMu0X3XsqWe39w/mEniyf5+DoNVyPL6muaVUmxr1Ioy443tGVs8Uer4elrG5Q+lzPDcBKYYI8Y0iJa7QRRsswbQrRbLCumwEIAw97MVPss0upvz3Seng7rymnLNHCyJqbLPz+Xu072dTVcz+X+9+jLZ8HVXhr/zxn+5GfD/t04fCTcrPr3VcJk/WnAHIw/372mMaz8C6jZYW6q/q9D/rfE6Us9BXnFHrRb/XXxKJ3mdfEAhiMncfIsuGUFs6DH+rxqNBqKGywviusHOnAYeZ4H81bPEwGLu5VYDMpsLBYnYB9dJ+IF8GfsxGI8cfgolkMug8P9MQ9oQQRNeSRCY9cHU7W8A1jwWzD0ORMaBzQASLf/a6yRCmDdljzSXL68EnRR2qr1YQZgKDUI5oWRllZjzQf8F7QMBbQMRbQMBbQM66BlKKBlKKJlKKBlWActQwEtQxEtQwEtwzpoGQpoGYpoGQpoGdZBy1BAy1BEy1BAy7AOWoYCHslQcaJ1Ewwhvb/OMyMFMcOJD7LrRBX1lQEcP1IoUaiJ6oP49hrHzxowyXx1qRyOnUfxyUG0+zzxg+xiz2LfVflYx9ntis03+f5WOaovTLPyCofQuSCIyZdqH9025XYEFoiuJFXFECz6pK/ae5CkypMB/R1JZV9cp7P8JbHrOdf/ATxjIXYOV0czAAAAAElFTkSuQmCC",
     "https://cdn-icons-png.flaticon.com/128/14233/14233041.png"
 ];
-// --- Variables Globales pour le Four ---
-let ressourceFourSelectionnee1 = "Bois"; // Première ressource choisie
-let ressourceFourSelectionnee2 = null;   // Seconde ressource choisie (null par défaut)
-let nbRessourceFour = 0;                 // Quantité à "crafter"
+
 // Variable globale pour le lecteur YouTube
 let ytPlayer;
-
+let scierieIntervalId = null;
 const workspace = document.getElementById('workspace');
 const svg = document.getElementById('svg-arrows');
 const fenetres = [];
@@ -209,11 +206,6 @@ async function affichageEnergie() { // <-- AJOUTE async ici pour pouvoir utilise
         // Affiche une erreur si la récupération échoue
     }
 }
-function refreshAllData() {
-    reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
-    affichageEnergie();  // Appelle la fonction pour rafraîchir l'énergie
-    console.log("Données (inventaire et énergie) rafraîchies via le bouton d'actualisation.");
-}
 
 function ajouterBois() {
     fetch("http://localhost:8080/API/ajouter/ressource/Bois", {
@@ -314,6 +306,170 @@ function lancerCuisson() {
                 cuissonBtn.textContent = 'Faire cuire'; // Restaurer le texte original
             }
         });
+}
+// ==============================================================================
+// NOUVELLE FONCTION : Exécute l'opération de la scierie (remplace l'appel à ajouterBois dans l'intervalle)
+// ==============================================================================
+async function performScierieOperation() {
+    try {
+        const response = await fetch(`${API_BASE_URL}utiliserScierie`, {
+            method: 'GET' // Utilise GET car ton endpoint @GetMapping("/utiliserScierie") est un GET
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur API lors de l'utilisation de la scierie: ${response.status} - ${errorText}`);
+        }
+
+        const successMessage = await response.text();
+        console.log("Scierie a tourné :", successMessage);
+        //reloadInventaire(); // Met à jour l'inventaire après chaque opération
+        //affichageEnergie(); // Met à jour l'énergie (car utiliserScierie peut consommer/produire de l'énergie)
+    } catch (error) {
+        console.error("Erreur lors de l'opération automatique de la scierie :", error);
+        // Si la scierie ne peut plus tourner (ex: manque d'énergie/ressources), on peut arrêter l'intervalle
+        if (scierieIntervalId) {
+            clearInterval(scierieIntervalId);
+            scierieIntervalId = null; // Réinitialise l'ID de l'intervalle
+            const scierieBtn = document.getElementById('ajouterScierie');
+            if (scierieBtn) {
+                scierieBtn.textContent = 'Scierie arrêtée (erreur)'; // Affiche l'état d'erreur
+                scierieBtn.onclick = toggleScierieProduction; // Permet de tenter de relancer manuellement
+                scierieBtn.disabled = false; // Réactive le bouton pour permettre l'interaction
+            }
+            alert(`La scierie s'est arrêtée en raison d'une erreur: ${error.message}`);
+        }
+    }
+}
+
+
+// ==============================================================================
+// FONCTION MODIFIÉE : Gère la mise en pause/reprise de la production de la scierie
+// ==============================================================================
+function toggleScierieProduction() {
+    const scierieBtn = document.getElementById('ajouterScierie');
+    if (!scierieBtn) {
+        console.error("Bouton 'ajouterScierie' introuvable.");
+        return;
+    }
+
+    if (scierieIntervalId) {
+        // Si la production est active (il y a un intervalle en cours)
+        clearInterval(scierieIntervalId); // Arrête l'intervalle
+        scierieIntervalId = null; // Réinitialise l'ID de l'intervalle
+        scierieBtn.textContent = 'Scierie en pause'; // Affiche le nouvel état
+        console.log("Production de bois automatique mise en pause.");
+    } else {
+        // Si la production est en pause (il n'y a pas d'intervalle en cours)
+        scierieIntervalId = setInterval(performScierieOperation, 1000); // Relance l'intervalle AVEC LA NOUVELLE FONCTION
+        scierieBtn.textContent = 'Scierie active'; // Affiche le nouvel état
+        console.log("Production de bois automatique relancée.");
+    }
+}
+
+
+// ==============================================================================
+// FONCTION MODIFIÉE : ajouterScierie() - DÉDIÉE AU PLACEMENT INITIAL
+// ==============================================================================
+async function ajouterScierie() {
+    const scierieBtn = document.getElementById('ajouterScierie');
+    if (!scierieBtn) return;
+
+    // Cette fonction ne devrait être appelée que pour le placement initial.
+    // Si la scierie existe déjà (ce qui est vérifié par initializeScierieButtonState()),
+    // l'onclick du bouton sera déjà changé vers toggleScierieProduction.
+    // Cette vérification est une sécurité, au cas où.
+    if (scierieBtn.onclick !== ajouterScierie) {
+        console.log("La scierie semble déjà placée. Bascule la production au lieu de la placer.");
+        toggleScierieProduction();
+        return;
+    }
+
+    scierieBtn.disabled = true;
+    const originalText = scierieBtn.textContent;
+    scierieBtn.textContent = 'Placement en cours...';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerScierie`, {
+            method: 'GET' // Ou 'POST', selon ton API Spring Boot pour PlacerScierie
+        });
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`Erreur API Placement de Scierie: ${response.status} - ${errorData}`);
+        }
+
+        console.log("Scierie placée avec succès !");
+
+        // Transition de l'état du bouton après un placement réussi
+        scierieBtn.textContent = 'Scierie active'; // Le texte devient "Scierie active"
+        scierieBtn.onclick = toggleScierieProduction; // Le prochain clic appellera toggleScierieProduction
+        scierieBtn.disabled = false; // Réactive le bouton
+
+        // Démarrer la production automatique immédiatement après placement
+        if (scierieIntervalId) clearInterval(scierieIntervalId);
+        scierieIntervalId = setInterval(performScierieOperation, 1000); // Lance l'intervalle AVEC LA NOUVELLE FONCTION
+        console.log("Production de bois automatique démarrée.");
+
+        reloadInventaire(); // Rafraîchit l'inventaire pour montrer le coût
+        affichageEnergie(); // Rafraîchit l'énergie
+
+    } catch (error) {
+        console.error("Échec du placement de la scierie :", error.message);
+        alert("Impossible de placer la scierie : " + error.message);
+        scierieBtn.disabled = false;
+        scierieBtn.textContent = originalText; // Restaure le texte original
+        reloadInventaire();
+        affichageEnergie();
+    }
+}
+
+
+// ==============================================================================
+// NOUVELLE FONCTION : Initialise l'état du bouton Scierie au chargement de la page
+// ==============================================================================
+async function initializeScierieButtonState() {
+    const scierieBtn = document.getElementById('ajouterScierie');
+    if (!scierieBtn) {
+        console.error("Bouton 'ajouterScierie' introuvable pour l'initialisation.");
+        return;
+    }
+
+    try {
+        // Appelle l'API pour connaître le nombre de scieries déjà possédées
+        const response = await fetch(`${API_BASE_URL}QuantitéScierie`);
+        if (!response.ok) {
+            throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
+        }
+        const nombreScieries = parseInt(await response.text(), 10); // L'API renvoie le nombre en texte brut
+        console.log(nombreScieries)
+        if (nombreScieries > 0) {
+            // S'il y a déjà des scieries, le bouton doit permettre de les contrôler
+            scierieBtn.textContent = 'Scierie pause'; // Ou 'Scierie en pause' si tu veux un état initial spécifique
+            scierieBtn.onclick = toggleScierieProduction; // Le clic basculera la production
+            scierieBtn.disabled = false;
+            // Démarrer la production si des scieries existent et devraient être actives par défaut au chargement
+            if (scierieIntervalId) clearInterval(scierieIntervalId); // Au cas où
+            scierieIntervalId = setInterval(performScierieOperation, 1000);
+            console.log(`Initialisation: ${nombreScieries} scierie(s) trouvée(s). Production démarrée.`);
+        } else {
+            // Aucune scierie n'existe, le bouton doit proposer d'en placer une
+            scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
+            scierieBtn.onclick = ajouterScierie; // Le clic lancera la fonction de placement
+            scierieBtn.disabled = false; // Assure que le bouton est actif
+        }
+    } catch (error) {
+        console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
+        scierieBtn.textContent = 'Scierie Indispo (Erreur)'; // Indique un problème
+        scierieBtn.disabled = true; // Désactive le bouton si l'état ne peut pas être vérifié
+    }
+}
+
+function refreshAllData() {
+    reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
+    affichageEnergie();  // Appelle la fonction pour rafraîchir l'énergie
+    ajouterScierie();
+    console.log("Données rafraîchies via le bouton d'actualisation.");
 }
 
 // Fonction pour charger l'API YouTube IFrame Player de manière asynchrone
