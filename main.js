@@ -355,16 +355,23 @@ function toggleScierieProduction() {
     }
 
     if (scierieIntervalId) {
-        // Si la production est active (il y a un intervalle en cours)
-        clearInterval(scierieIntervalId); // Arrête l'intervalle
-        scierieIntervalId = null; // Réinitialise l'ID de l'intervalle
-        scierieBtn.textContent = 'Scierie en pause'; // Affiche le nouvel état
+        clearInterval(scierieIntervalId);
+        scierieIntervalId = null;
+        scierieBtn.textContent = 'Scierie en pause';
         console.log("Production de bois automatique mise en pause.");
     } else {
-        // Si la production est en pause (il n'y a pas d'intervalle en cours)
-        scierieIntervalId = setInterval(performScierieOperation, 1000); // Relance l'intervalle AVEC LA NOUVELLE FONCTION
-        scierieBtn.textContent = 'Scierie active'; // Affiche le nouvel état
-        console.log("Production de bois automatique relancée.");
+        scierieBtn.textContent = 'Utilisation en cours...';
+        scierieBtn.disabled = true;
+
+        performScierieOperation().then(() => {
+            scierieBtn.textContent = 'Scierie en pause';
+            scierieBtn.disabled = false;
+            console.log("Scierie utilisée une seule fois.");
+        }).catch(error => {
+            console.error("Erreur lors de l'utilisation ponctuelle de la scierie:", error);
+            scierieBtn.textContent = 'Scierie en pause (Erreur)';
+            scierieBtn.disabled = false;
+        });
     }
 }
 
@@ -487,6 +494,7 @@ async function initializeScierieButtonState() {
 }
 
 function refreshAllData() {
+    toggleScierieProduction(),
     reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
     affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
     console.log("Données rafraîchies via le bouton d'actualisation.");
