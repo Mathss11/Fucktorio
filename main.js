@@ -324,8 +324,32 @@ async function performScierieOperation() {
 
         const successMessage = await response.text();
         console.log("Scierie a tourné :", successMessage);
-        reloadInventaire();
-        affichageEnergie();
+        const nomRessource = "bois"; // La ressource spécifique que nous voulons rafraîchir
+
+        // Le nom de la ressource "bois" générera l'ID "bois"
+        const idGenere = nomRessource.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]/g, "");
+
+        fetch(`http://localhost:8080/API/quantite/${nomRessource}`)
+            .then(resp => resp.text())
+            .then(qte => {
+                const spanElement = document.getElementById(idGenere);
+                if (spanElement) {
+                    spanElement.textContent = qte;
+                } else {
+                    console.warn(`Élément HTML avec l'ID '${idGenere}' introuvable pour la ressource '${nomRessource}'.`);
+                }
+            })
+            .catch(error => {
+                const spanElement = document.getElementById(idGenere);
+                if (spanElement) {
+                    spanElement.textContent = "?"; // Affiche un "?" en cas d'erreur
+                } else {
+                    console.error(`Erreur de chargement pour '${nomRessource}' et élément avec l'ID '${idGenere}' introuvable.`, error);
+                }
+            });
+        //affichageEnergie();
     } catch (error) {
         console.error("Erreur lors de l'opération manuelle de la scierie :", error);
         throw error;
@@ -400,8 +424,8 @@ async function ajouterScierie() {
             scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
             scierieBtn.onclick = manuallyUseScierie;
             scierieBtn.disabled = false;
-            reloadInventaire();
-            affichageEnergie();
+            //reloadInventaire();
+            //affichageEnergie();
         } else {
             throw new Error("L'API de placement a répondu OK, mais le nombre de scieries n'a pas augmenté. Vérifiez les conditions côté serveur.");
         }
