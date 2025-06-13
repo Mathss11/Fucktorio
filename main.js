@@ -424,8 +424,8 @@ async function ajouterScierie() {
             scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
             scierieBtn.onclick = manuallyUseScierie;
             scierieBtn.disabled = false;
-            //reloadInventaire();
-            //affichageEnergie();
+            reloadInventaire();
+            affichageEnergie();
         } else {
             throw new Error("L'API de placement a répondu OK, mais le nombre de scieries n'a pas augmenté. Vérifiez les conditions côté serveur.");
         }
