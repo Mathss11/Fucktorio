@@ -2,10 +2,10 @@ window.onload = refreshAllData;
 window.onload = initializeScierieButtonState;
 // Liste des noms de ressources
 const ressourcesNoms = [
-    "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium raffiné", "Dechets Radioactifs", "Plutonium",
-    "Or Brut", "Lingot d'Or", "Fil d'or", "Cables avancés", "Transformateur", "Batteries", "Bois",
-    "Caoutchouc", "Cuivre Brut", "Lingot de Cuivre", "Fil de Cuivre", "Cables basiques", "Pétrole",
-    "Plastique", "Fer Brut", "Lingot de Fer", "Plaque de Fer", "Vis", "Pierre Brute", "Silice",
+    "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium Raffiné", "Déchets Radioactifs", "Plutonium",
+    "Or Brut", "Lingot d'Or", "Fil d'Or", "Cables avancés", "Transformateur", "Batteries", "Bois",
+    "Caoutchouc", "Cuivre Brut", "Lingot de Cuivre", "Fil de Cuivre", "Cables Basiques", "Pétrole",
+    "Plastique", "Fer Brut", "Lingot de Fer", "Plaque de Fer", "Vis", "Pierre Brute", "Silicium",
     "Circuit Imprimé", "Charbon", "Lingot d'Acier", "Plaque Renforcée", "Coque Électronique", "MOAB"
 ];
 
