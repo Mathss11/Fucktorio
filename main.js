@@ -1,5 +1,7 @@
+const API_BASE_URL = 'http://localhost:8080/API/';
 window.onload = refreshAllData;
 window.onload = initializeScierieButtonState;
+window.onload = initializeForeuseButtonState();
 // Liste des noms de ressources
 const ressourcesNoms = [
     "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium Raffiné", "Déchets Radioactifs", "Plutonium",
@@ -54,7 +56,6 @@ const fenetres = [];
 
 let selectedOutput = null;
 let windowCount = 0;
-const API_BASE_URL = 'http://localhost:8080/API/';
 // =================================================================================================================
 // Fonctions et variables de l'inventaire, API et YouTube (votre second script)
 // =================================================================================================================
@@ -308,9 +309,7 @@ function lancerCuisson() {
             }
         });
 }
-// ==============================================================================
-// FONCTION : Exécute l'opération de la scierie (appelée manuellement)
-// ==============================================================================
+
 // Nouvelle fonction pour rafraîchir spécifiquement la quantité de bois
 function refreshBoisQuantity() {
     const nomRessourceForAPI = "Bois"; // <-- CHANGER ICI : Majuscule pour l'API
@@ -408,7 +407,7 @@ async function ajouterScierie() {
 
     if (scierieBtn.onclick !== ajouterScierie) {
         console.log("La scierie semble déjà placée. Déclenche l'utilisation manuelle au lieu de la placer.");
-        manuallyUseScierie();
+        await manuallyUseScierie();
         return;
     }
 
@@ -457,332 +456,464 @@ async function ajouterScierie() {
 // ==============================================================================
 // Initialise l'état du bouton Scierie au chargement de la page
 // ==============================================================================
-async function initializeScierieButtonState() {
-    const scierieBtn = document.getElementById('ajouterScierie');
-    if (!scierieBtn) {
-        console.error("Bouton 'ajouterScierie' introuvable pour l'initialisation.");
+        async function initializeScierieButtonState() {
+            const scierieBtn = document.getElementById('ajouterScierie');
+            if (!scierieBtn) {
+                console.error("Bouton 'ajouterScierie' introuvable pour l'initialisation.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
+                if (!response.ok) {
+                    throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
+                }
+                const nombreScieries = parseInt(await response.text(), 10);
+                console.log("Nombre de scieries initial :", nombreScieries);
+
+                if (nombreScieries > 0) {
+                    scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
+                    scierieBtn.onclick = manuallyUseScierie;
+                    scierieBtn.disabled = false;
+                } else {
+                    scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
+                    scierieBtn.onclick = ajouterScierie;
+                    scierieBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
+                scierieBtn.textContent = 'Scierie Indispo (Erreur)';
+                scierieBtn.disabled = true;
+            }
+        }
+
+        function refreshAllData() {
+            manuallyUseScierie();
+            reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
+            affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
+            console.log("Données rafraîchies via le bouton d'actualisation.");
+        }
+
+async function initializeForeuseButtonState() {
+    const foreuseBtn = document.getElementById('ajouterForeuse');
+    if (!foreuseBtn) {
+        console.error("Bouton 'ajouterForeuse' introuvable pour l'initialisation.");
         return;
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
+        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Foreuse`);
         if (!response.ok) {
-            throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
+            throw new Error(`Erreur API lors de la récupération du nombre de foreuses: ${response.status}`);
         }
-        const nombreScieries = parseInt(await response.text(), 10);
-        console.log("Nombre de scieries initial :", nombreScieries);
+        const nombreForeuses = parseInt(await response.text(), 10);
+        console.log("Nombre de foreuses initial :", nombreForeuses);
 
-        if (nombreScieries > 0) {
-            scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
-            scierieBtn.onclick = manuallyUseScierie;
-            scierieBtn.disabled = false;
+        if (nombreForeuses > 0) {
+            foreuseBtn.textContent = 'Foreuse placée (Rafraîchir)';
+            foreuseBtn.onclick = manuallyUseForeuse;
+            foreuseBtn.disabled = false;
         } else {
-            scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
-            scierieBtn.onclick = ajouterScierie;
-            scierieBtn.disabled = false;
+            foreuseBtn.textContent = 'Ajouter Foreuse pour 15 bois et 10 lingots de fer';
+            foreuseBtn.onclick = ajouterForeuse;
+            foreuseBtn.disabled = false;
         }
     } catch (error) {
-        console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
-        scierieBtn.textContent = 'Scierie Indispo (Erreur)';
-        scierieBtn.disabled = true;
+        console.error("Erreur lors de l'initialisation de l'état du bouton foreuse :", error);
+        foreuseBtn.textContent = 'Foreuse Indispo (Erreur)';
+        foreuseBtn.disabled = true;
     }
 }
 
-function refreshAllData() {
-    manuallyUseScierie();
-    reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
-    affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
-    console.log("Données rafraîchies via le bouton d'actualisation.");
+async function ajouterForeuse() {
+    const foreuseBtn = document.getElementById('ajouterForeuse');
+    if (!foreuseBtn) return;
+
+    if (foreuseBtn.onclick !== ajouterForeuse) {
+        console.log("La foreuse semble déjà placée. Déclenche l'utilisation manuelle au lieu de la placer.");
+        manuallyUseForeuse();
+        return;
+    }
+
+    foreuseBtn.disabled = true;
+    const originalText = foreuseBtn.textContent;
+    foreuseBtn.textContent = 'Placement en cours...';
+
+    try {
+        const placementResponse = await fetch(`${API_BASE_URL}PlacerForeuse`, {
+            method: 'GET'
+        });
+
+        if (!placementResponse.ok) {
+            const errorData = await placementResponse.text();
+            throw new Error(`Erreur API Placement de Foreuse: ${placementResponse.status} - ${errorData}`);
+        }
+
+        const quantiteResponse = await fetch(`${API_BASE_URL}QuantitéFabrication/Foreuse`);
+        if (!quantiteResponse.ok) {
+            throw new Error(`Erreur API lors de la vérification de la quantité de foreuses après placement: ${quantiteResponse.status}`);
+        }
+        const nouvelleQuantiteForeuses = parseInt(await quantiteResponse.text(), 10);
+        console.log("Nouvelle quantité de foreuses après tentative de placement :", nouvelleQuantiteForeuses);
+
+        if (nouvelleQuantiteForeuses > 0) {
+            console.log("Foreuse placée avec succès !");
+            foreuseBtn.textContent = 'Foreuse placée (Rafraîchir)';
+            foreuseBtn.onclick = manuallyUseForeuse;
+            foreuseBtn.disabled = false;
+            reloadInventaire();
+            affichageEnergie();
+        } else {
+            throw new Error("L'API de placement a répondu OK, mais le nombre de foreuses n'a pas augmenté. Vérifiez les conditions côté serveur.");
+        }
+    } catch (error) {
+        console.error("Échec du placement de la foreuse :", error.message);
+        alert("Impossible de placer la foreuse : " + error.message);
+        foreuseBtn.disabled = false;
+        foreuseBtn.textContent = originalText;
+        reloadInventaire();
+        affichageEnergie();
+    }
 }
+
+// ==============================================================================
+// Fonction manuelle pour utiliser la foreuse
+// ==============================================================================
+async function manuallyUseForeuse() {
+    const foreuseBtn = document.getElementById('ajouterForeuse');
+    if (!foreuseBtn) {
+        console.error("Bouton 'ajouterForeuse' introuvable.");
+        return;
+    }
+
+    foreuseBtn.disabled = true;
+    const originalText = foreuseBtn.textContent;
+
+    try {
+        await performForeuseOperation();
+
+        foreuseBtn.textContent = originalText;
+        foreuseBtn.disabled = false;
+        console.log("Foreuse utilisée manuellement (stock rafraîchi).");
+    } catch (error) {
+        console.error("Échec de l'utilisation manuelle de la foreuse :", error.message);
+        alert("Impossible d'utiliser la foreuse : " + error.message);
+        foreuseBtn.textContent = originalText;
+        foreuseBtn.disabled = false;
+    }
+}
+
+// ==============================================================================
+// Exécute l'opération de la foreuse
+// ==============================================================================
+async function performForeuseOperation() {
+    try {
+        const response = await fetch(`${API_BASE_URL}utiliserForeuse/T1`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur API lors de l'utilisation de la foreuse: ${response.status} - ${errorText}`);
+        }
+
+        const successMessage = await response.text();
+        console.log("Foreuse a tourné :", successMessage);
+    } catch (error) {
+        console.error("Erreur lors de l'opération manuelle de la foreuse :", error);
+        throw error;
+    }
+}
+
+
 
 // Fonction pour charger l'API YouTube IFrame Player de manière asynchrone
-function loadYoutubeAPI() {
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-}
+        function loadYoutubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
 
 // Appeler cette fonction une fois que le DOM est chargé pour charger l'API YouTube
-document.addEventListener('DOMContentLoaded', () => {
-    loadYoutubeAPI();
-    // Recharger l'inventaire et l'energie au chargement de la page
-    refreshAllData();
+        document.addEventListener('DOMContentLoaded', () => {
+            loadYoutubeAPI();
+            // Recharger l'inventaire et l'energie au chargement de la page
+            refreshAllData();
 
-    const selectRessourceFour1 = document.getElementById("selectRessourceFour1");
-    if (selectRessourceFour1) {
-        // Appelle la fonction pour initialiser l'état du bouton au chargement de la page
-        updateCuissonButtonState();
-        selectRessourceFour1.addEventListener('change', updateCuissonButtonState);
-    }
-    // ... (Le reste de tes event listeners pour les autres éléments) ...
-});
+            const selectRessourceFour1 = document.getElementById("selectRessourceFour1");
+            if (selectRessourceFour1) {
+                // Appelle la fonction pour initialiser l'état du bouton au chargement de la page
+                updateCuissonButtonState();
+                selectRessourceFour1.addEventListener('change', updateCuissonButtonState);
+            }
+            // ... (Le reste de tes event listeners pour les autres éléments) ...
+        });
 
 // onYouTubeIframeAPIReady est appelée automatiquement par l'API YouTube
 // une fois qu'elle est prête.
-function onYouTubeIframeAPIReady() {
-    console.log("API YouTube IFrame Player est prête.");
-    // Vous pouvez initialiser votre player ici si vous voulez qu'il soit prêt au chargement de la page,
-    // ou laisser playYoutubeSound le créer dynamiquement quand il est appelé.
-}
+        function onYouTubeIframeAPIReady() {
+            console.log("API YouTube IFrame Player est prête.");
+            // Vous pouvez initialiser votre player ici si vous voulez qu'il soit prêt au chargement de la page,
+            // ou laisser playYoutubeSound le créer dynamiquement quand il est appelé.
+        }
 
 // =================================================================================================================
 // Partie sur les chaines de prod
 // =================================================================================================================
 
 
-
-document.getElementById('btn-construire').addEventListener('click', () => {
-    const menu = document.getElementById('menu-types');
-    menu.classList.toggle('hidden');
-});
-
-document.querySelectorAll('#menu-types button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const type = btn.getAttribute('data-type');
-        createWindow(type, 200 + windowCount * 30, 200 + windowCount * 30);
-        windowCount++;
-        document.getElementById('menu-types').classList.add('hidden');
-    });
-});
-
-async function createWindow(type, x, y) {
-    const win = document.createElement('div');
-    win.className = 'mini-fenetre';
-    win.style.left = `${x}px`;
-    win.style.top = `${y}px`;
-    win.dataset.id = `${type}-${Date.now()}`;
-    win.dataset.type = type;
-
-    const contenu = document.createElement('div');
-    contenu.className = 'contenu';
-
-    const titre = document.createElement('div');
-    titre.textContent = type;
-
-    if (type === 'Four') {
-        win._inputs = {};
-        win._outputs = {};
-
-        const fabricationDiv = document.createElement('div');
-        fabricationDiv.className = 'fabrication';
-        win._fabricationDiv = fabricationDiv;
-    }
-
-    const craftControlsDiv = document.createElement('div');
-    craftControlsDiv.className = 'craft-controls';
-
-    const craftSelect = document.createElement('select');
-    craftSelect.className = 'craft-select';
-
-    const moduleStockDisplay = document.createElement('div');
-    moduleStockDisplay.className = 'module-stock-display';
-    moduleStockDisplay.textContent = 'Stock: Chargement...';
-
-    const craftBtn = document.createElement('button');
-    craftBtn.className = 'craft-btn';
-    craftBtn.textContent = 'Lancer Craft';
-
-    if (type === 'Four') {
-        const options = [
-            "Charbon", "Lingot de Fer", "Lingot d'Acier",
-            "Lingot de Zinc", "Lingot de Cuivre", "Lingot d'Or"
-        ];
-        options.forEach(optionText => {
-            const option = document.createElement('option');
-            option.value = optionText;
-            option.textContent = optionText;
-            craftSelect.appendChild(option);
+        document.getElementById('btn-construire').addEventListener('click', () => {
+            const menu = document.getElementById('menu-types');
+            menu.classList.toggle('hidden');
         });
-    } else {
-        const option = document.createElement('option');
-        option.value = "";
-        option.textContent = `-- Sélectionner un craft --`;
-        option.disabled = true;
-        option.selected = true;
-        craftSelect.appendChild(option);
-    }
 
-    contenu.appendChild(titre);
-    craftControlsDiv.appendChild(craftSelect);
-    craftControlsDiv.appendChild(moduleStockDisplay);
-    craftControlsDiv.appendChild(craftBtn);
-    contenu.appendChild(craftControlsDiv);
+        document.querySelectorAll('#menu-types button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.getAttribute('data-type');
+                createWindow(type, 200 + windowCount * 30, 200 + windowCount * 30);
+                windowCount++;
+                document.getElementById('menu-types').classList.add('hidden');
+            });
+        });
 
-    win._craftInterval = null;
-    win._isCrafting = false;
+        async function createWindow(type, x, y) {
+            const win = document.createElement('div');
+            win.className = 'mini-fenetre';
+            win.style.left = `${x}px`;
+            win.style.top = `${y}px`;
+            win.dataset.id = `${type}-${Date.now()}`;
+            win.dataset.type = type;
 
-    // Appel de la fonction globale updateModuleStockDisplay
-    craftSelect.addEventListener('change', async () => {
-        const selectedItem = craftSelect.value;
-        await updateModuleStockDisplay(selectedItem, moduleStockDisplay); // <-- Modification ici
+            const contenu = document.createElement('div');
+            contenu.className = 'contenu';
 
-        if (win._isCrafting) {
-            clearInterval(win._craftInterval);
-            win._isCrafting = false;
+            const titre = document.createElement('div');
+            titre.textContent = type;
+
+            if (type === 'Four') {
+                win._inputs = {};
+                win._outputs = {};
+
+                const fabricationDiv = document.createElement('div');
+                fabricationDiv.className = 'fabrication';
+                win._fabricationDiv = fabricationDiv;
+            }
+
+            const craftControlsDiv = document.createElement('div');
+            craftControlsDiv.className = 'craft-controls';
+
+            const craftSelect = document.createElement('select');
+            craftSelect.className = 'craft-select';
+
+            const moduleStockDisplay = document.createElement('div');
+            moduleStockDisplay.className = 'module-stock-display';
+            moduleStockDisplay.textContent = 'Stock: Chargement...';
+
+            const craftBtn = document.createElement('button');
+            craftBtn.className = 'craft-btn';
             craftBtn.textContent = 'Lancer Craft';
-            console.log(`Arrêt du craft pour le module ${win.dataset.id} en raison du changement de sélection.`);
-        }
-    });
 
-    // Appel initial de la fonction globale updateModuleStockDisplay
-    if (craftSelect.value) {
-        await updateModuleStockDisplay(craftSelect.value, moduleStockDisplay); // <-- Modification ici
-    }
+            if (type === 'Four') {
+                const options = [
+                    "Charbon", "Lingot de Fer", "Lingot d'Acier",
+                    "Lingot de Zinc", "Lingot de Cuivre", "Lingot d'Or"
+                ];
+                options.forEach(optionText => {
+                    const option = document.createElement('option');
+                    option.value = optionText;
+                    option.textContent = optionText;
+                    craftSelect.appendChild(option);
+                });
+            } else {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = `-- Sélectionner un craft --`;
+                option.disabled = true;
+                option.selected = true;
+                craftSelect.appendChild(option);
+            }
 
-    craftBtn.addEventListener('click', () => {
-        const selectedCraft = craftSelect.value;
-        if (!selectedCraft) {
-            console.log("Veuillez sélectionner un élément à crafter.");
-            return;
-        }
+            contenu.appendChild(titre);
+            craftControlsDiv.appendChild(craftSelect);
+            craftControlsDiv.appendChild(moduleStockDisplay);
+            craftControlsDiv.appendChild(craftBtn);
+            contenu.appendChild(craftControlsDiv);
 
-        if (!win._isCrafting) {
-            win._craftInterval = setInterval(() => {
-                lancerCuissonAutomatique(win, selectedCraft, moduleStockDisplay);
-            }, 1000);
-            win._isCrafting = true;
-            craftBtn.textContent = 'Arrêter Craft';
-            console.log(`Démarrage du craft de ${selectedCraft} pour le module ${win.dataset.id}`);
-        } else {
-            clearInterval(win._craftInterval);
+            win._craftInterval = null;
             win._isCrafting = false;
-            craftBtn.textContent = 'Lancer Craft';
-            console.log(`Arrêt du craft pour le module ${win.dataset.id}`);
-        }
-    });
 
-    const toggleBtn = document.createElement('button');
-    toggleBtn.className = 'toggle-module-btn';
-    toggleBtn.textContent = '_';
-    toggleBtn.title = `Minimiser ${type}`;
+            // Appel de la fonction globale updateModuleStockDisplay
+            craftSelect.addEventListener('change', async () => {
+                const selectedItem = craftSelect.value;
+                await updateModuleStockDisplay(selectedItem, moduleStockDisplay); // <-- Modification ici
 
-    toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        win.classList.toggle('minimized');
+                if (win._isCrafting) {
+                    clearInterval(win._craftInterval);
+                    win._isCrafting = false;
+                    craftBtn.textContent = 'Lancer Craft';
+                    console.log(`Arrêt du craft pour le module ${win.dataset.id} en raison du changement de sélection.`);
+                }
+            });
 
-        if (win.classList.contains('minimized')) {
-            toggleBtn.textContent = '^';
-            toggleBtn.title = `Maximiser ${type}`;
-        } else {
+            // Appel initial de la fonction globale updateModuleStockDisplay
+            if (craftSelect.value) {
+                await updateModuleStockDisplay(craftSelect.value, moduleStockDisplay); // <-- Modification ici
+            }
+
+            craftBtn.addEventListener('click', () => {
+                const selectedCraft = craftSelect.value;
+                if (!selectedCraft) {
+                    console.log("Veuillez sélectionner un élément à crafter.");
+                    return;
+                }
+
+                if (!win._isCrafting) {
+                    win._craftInterval = setInterval(() => {
+                        lancerCuissonAutomatique(win, selectedCraft, moduleStockDisplay);
+                    }, 1000);
+                    win._isCrafting = true;
+                    craftBtn.textContent = 'Arrêter Craft';
+                    console.log(`Démarrage du craft de ${selectedCraft} pour le module ${win.dataset.id}`);
+                } else {
+                    clearInterval(win._craftInterval);
+                    win._isCrafting = false;
+                    craftBtn.textContent = 'Lancer Craft';
+                    console.log(`Arrêt du craft pour le module ${win.dataset.id}`);
+                }
+            });
+
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = 'toggle-module-btn';
             toggleBtn.textContent = '_';
             toggleBtn.title = `Minimiser ${type}`;
+
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                win.classList.toggle('minimized');
+
+                if (win.classList.contains('minimized')) {
+                    toggleBtn.textContent = '^';
+                    toggleBtn.title = `Maximiser ${type}`;
+                } else {
+                    toggleBtn.textContent = '_';
+                    toggleBtn.title = `Minimiser ${type}`;
+                }
+            });
+
+            win.appendChild(toggleBtn);
+            win.appendChild(contenu);
+            workspace.appendChild(win);
+
+            win._moduleStockDisplay = moduleStockDisplay;
+            makeDraggable(win);
+            fenetres.push(win);
         }
-    });
 
-    win.appendChild(toggleBtn);
-    win.appendChild(contenu);
-    workspace.appendChild(win);
+        async function lancerCuissonAutomatique(module, itemToCraft, moduleStockDisplayElement) { // Renommé le paramètre ici aussi
+            let urlAPI;
+            let nombreDeCraft = 999999999;
 
-    win._moduleStockDisplay = moduleStockDisplay;
-    makeDraggable(win);
-    fenetres.push(win);
-}
+            let inputRessource1 = null;
+            let inputRessource2 = null;
 
-async function lancerCuissonAutomatique(module, itemToCraft, moduleStockDisplayElement) { // Renommé le paramètre ici aussi
-    let urlAPI;
-    let nombreDeCraft = 999999999;
-
-    let inputRessource1 = null;
-    let inputRessource2 = null;
-
-    switch (itemToCraft) {
-        case "Lingot de Fer":
-            inputRessource1 = "Fer Brut";
-            break;
-        case "Lingot d'Acier":
-            inputRessource1 = "Lingot de Fer";
-            inputRessource2 = "Charbon";
-            break;
-        case "Lingot de Zinc":
-            inputRessource1 = "Zinc Brut";
-            break;
-        case "Lingot de Cuivre":
-            inputRessource1 = "Cuivre Brut";
-            break;
-        case "Lingot d'Or":
-            inputRessource1 = "Or Brut";
-            break;
-        case "Charbon":
-            inputRessource1 = "Bois";
-            break;
-        default:
-            console.error(`Craft non reconnu pour les machines: ${itemToCraft}`);
-            moduleStockDisplayElement.textContent = `Erreur: Craft non supporté.`; // Utilisation du paramètre
-            if (module && module._craftInterval) {
-                clearInterval(module._craftInterval);
-                module._isCrafting = false;
-                module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+            switch (itemToCraft) {
+                case "Lingot de Fer":
+                    inputRessource1 = "Fer Brut";
+                    break;
+                case "Lingot d'Acier":
+                    inputRessource1 = "Lingot de Fer";
+                    inputRessource2 = "Charbon";
+                    break;
+                case "Lingot de Zinc":
+                    inputRessource1 = "Zinc Brut";
+                    break;
+                case "Lingot de Cuivre":
+                    inputRessource1 = "Cuivre Brut";
+                    break;
+                case "Lingot d'Or":
+                    inputRessource1 = "Or Brut";
+                    break;
+                case "Charbon":
+                    inputRessource1 = "Bois";
+                    break;
+                default:
+                    console.error(`Craft non reconnu pour les machines: ${itemToCraft}`);
+                    moduleStockDisplayElement.textContent = `Erreur: Craft non supporté.`; // Utilisation du paramètre
+                    if (module && module._craftInterval) {
+                        clearInterval(module._craftInterval);
+                        module._isCrafting = false;
+                        module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+                    }
+                    return;
             }
-            return;
-    }
 
-    if (inputRessource1 && inputRessource2) {
-        urlAPI = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(inputRessource1)}/${encodeURIComponent(inputRessource2)}/${nombreDeCraft}`;
-    } else if (inputRessource1) {
-        urlAPI = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(inputRessource1)}/${nombreDeCraft}`;
-    } else {
-        console.error(`Impossible de déterminer l'URL du four pour ${itemToCraft}.`);
-        moduleStockDisplayElement.textContent = `Erreur: Impossible de crafter.`; // Utilisation du paramètre
-        if (module && module._craftInterval) {
-            clearInterval(module._craftInterval);
-            module._isCrafting = false;
-            module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+            if (inputRessource1 && inputRessource2) {
+                urlAPI = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(inputRessource1)}/${encodeURIComponent(inputRessource2)}/${nombreDeCraft}`;
+            } else if (inputRessource1) {
+                urlAPI = `http://localhost:8080/API/utiliserFour/${encodeURIComponent(inputRessource1)}/${nombreDeCraft}`;
+            } else {
+                console.error(`Impossible de déterminer l'URL du four pour ${itemToCraft}.`);
+                moduleStockDisplayElement.textContent = `Erreur: Impossible de crafter.`; // Utilisation du paramètre
+                if (module && module._craftInterval) {
+                    clearInterval(module._craftInterval);
+                    module._isCrafting = false;
+                    module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+                }
+                return;
+            }
+
+            console.log(`Lancement du four (automatique) pour ${itemToCraft} avec URL : ${urlAPI}`);
+
+            try {
+                const response = await fetch(urlAPI, {method: "GET"});
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Erreur du serveur (${response.status}) : ${errorText}`);
+                }
+                const data = await response.text();
+                console.log(`Craft automatique de ${itemToCraft} lancé ! Réponse : ${data}`);
+
+                const newStock = await getResourceStock(itemToCraft);
+                moduleStockDisplayElement.textContent = `Stock: ${newStock}`; // Utilisation du paramètre
+                //reloadInventaire();
+            } catch (error) {
+                console.log(`Échec du craft automatique de ${itemToCraft}: ${error.message}`);
+                console.error('Détails de l\'erreur de craft automatique :', error);
+                if (module && module._craftInterval) {
+                    clearInterval(module._craftInterval);
+                    module._isCrafting = false;
+                    module.querySelector('.craft-btn').textContent = 'Lancer Craft';
+                }
+            }
         }
-        return;
-    }
 
-    console.log(`Lancement du four (automatique) pour ${itemToCraft} avec URL : ${urlAPI}`);
+        function makeDraggable(win) {
+            let isDragging = false;
+            let offsetX = 0;
+            let offsetY = 0;
 
-    try {
-        const response = await fetch(urlAPI, { method: "GET" });
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Erreur du serveur (${response.status}) : ${errorText}`);
-        }
-        const data = await response.text();
-        console.log(`Craft automatique de ${itemToCraft} lancé ! Réponse : ${data}`);
+            win.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('toggle-module-btn') ||
+                    e.target.classList.contains('craft-btn') ||
+                    e.target.classList.contains('craft-select')) {
+                    isDragging = false;
+                    return;
+                }
+                isDragging = true;
+                offsetX = e.clientX - win.offsetLeft;
+                offsetY = e.clientY - win.offsetTop;
+                win.style.zIndex = Date.now();
+            });
 
-        const newStock = await getResourceStock(itemToCraft);
-        moduleStockDisplayElement.textContent = `Stock: ${newStock}`; // Utilisation du paramètre
-        //reloadInventaire();
-    } catch (error) {
-        console.log(`Échec du craft automatique de ${itemToCraft}: ${error.message}`);
-        console.error('Détails de l\'erreur de craft automatique :', error);
-        if (module && module._craftInterval) {
-            clearInterval(module._craftInterval);
-            module._isCrafting = false;
-            module.querySelector('.craft-btn').textContent = 'Lancer Craft';
-        }
-    }
-}
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    win.style.left = `${e.clientX - offsetX}px`;
+                    win.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
 
-function makeDraggable(win) {
-    let isDragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    win.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('toggle-module-btn') ||
-            e.target.classList.contains('craft-btn') ||
-            e.target.classList.contains('craft-select')) {
-            isDragging = false;
-            return;
-        }
-        isDragging = true;
-        offsetX = e.clientX - win.offsetLeft;
-        offsetY = e.clientY - win.offsetTop;
-        win.style.zIndex = Date.now();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            win.style.left = `${e.clientX - offsetX}px`;
-            win.style.top = `${e.clientY - offsetY}px`;
-        }
-    });
-
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
 }
