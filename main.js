@@ -407,7 +407,7 @@ async function ajouterScierie() {
 
     if (scierieBtn.onclick !== ajouterScierie) {
         console.log("La scierie semble déjà placée. Déclenche l'utilisation manuelle au lieu de la placer.");
-        await manuallyUseScierie();
+        manuallyUseScierie();
         return;
     }
 
@@ -456,176 +456,43 @@ async function ajouterScierie() {
 // ==============================================================================
 // Initialise l'état du bouton Scierie au chargement de la page
 // ==============================================================================
-        async function initializeScierieButtonState() {
-            const scierieBtn = document.getElementById('ajouterScierie');
-            if (!scierieBtn) {
-                console.error("Bouton 'ajouterScierie' introuvable pour l'initialisation.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
-                if (!response.ok) {
-                    throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
-                }
-                const nombreScieries = parseInt(await response.text(), 10);
-                console.log("Nombre de scieries initial :", nombreScieries);
-
-                if (nombreScieries > 0) {
-                    scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
-                    scierieBtn.onclick = manuallyUseScierie;
-                    scierieBtn.disabled = false;
-                } else {
-                    scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
-                    scierieBtn.onclick = ajouterScierie;
-                    scierieBtn.disabled = false;
-                }
-            } catch (error) {
-                console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
-                scierieBtn.textContent = 'Scierie Indispo (Erreur)';
-                scierieBtn.disabled = true;
-            }
-        }
-
-        function refreshAllData() {
-            manuallyUseScierie();
-            reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
-            affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
-            console.log("Données rafraîchies via le bouton d'actualisation.");
-        }
-
-async function initializeForeuseButtonState() {
-    const foreuseBtn = document.getElementById('ajouterForeuse');
-    if (!foreuseBtn) {
-        console.error("Bouton 'ajouterForeuse' introuvable pour l'initialisation.");
+async function initializeScierieButtonState() {
+    const scierieBtn = document.getElementById('ajouterScierie');
+    if (!scierieBtn) {
+        console.error("Bouton 'ajouterScierie' introuvable pour l'initialisation.");
         return;
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Foreuse`);
+        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
         if (!response.ok) {
-            throw new Error(`Erreur API lors de la récupération du nombre de foreuses: ${response.status}`);
+            throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
         }
-        const nombreForeuses = parseInt(await response.text(), 10);
-        console.log("Nombre de foreuses initial :", nombreForeuses);
+        const nombreScieries = parseInt(await response.text(), 10);
+        console.log("Nombre de scieries initial :", nombreScieries);
 
-        if (nombreForeuses > 0) {
-            foreuseBtn.textContent = 'Foreuse placée (Rafraîchir)';
-            foreuseBtn.onclick = manuallyUseForeuse;
-            foreuseBtn.disabled = false;
+        if (nombreScieries > 0) {
+            scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
+            scierieBtn.onclick = manuallyUseScierie;
+            scierieBtn.disabled = false;
         } else {
-            foreuseBtn.textContent = 'Ajouter Foreuse pour 15 bois et 10 lingots de fer';
-            foreuseBtn.onclick = ajouterForeuse;
-            foreuseBtn.disabled = false;
+            scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
+            scierieBtn.onclick = ajouterScierie;
+            scierieBtn.disabled = false;
         }
     } catch (error) {
-        console.error("Erreur lors de l'initialisation de l'état du bouton foreuse :", error);
-        foreuseBtn.textContent = 'Foreuse Indispo (Erreur)';
-        foreuseBtn.disabled = true;
+        console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
+        scierieBtn.textContent = 'Scierie Indispo (Erreur)';
+        scierieBtn.disabled = true;
     }
 }
 
-async function ajouterForeuse() {
-    const foreuseBtn = document.getElementById('ajouterForeuse');
-    if (!foreuseBtn) return;
-
-    if (foreuseBtn.onclick !== ajouterForeuse) {
-        console.log("La foreuse semble déjà placée. Déclenche l'utilisation manuelle au lieu de la placer.");
-        manuallyUseForeuse();
-        return;
-    }
-
-    foreuseBtn.disabled = true;
-    const originalText = foreuseBtn.textContent;
-    foreuseBtn.textContent = 'Placement en cours...';
-
-    try {
-        const placementResponse = await fetch(`${API_BASE_URL}PlacerForeuse`, {
-            method: 'GET'
-        });
-
-        if (!placementResponse.ok) {
-            const errorData = await placementResponse.text();
-            throw new Error(`Erreur API Placement de Foreuse: ${placementResponse.status} - ${errorData}`);
-        }
-
-        const quantiteResponse = await fetch(`${API_BASE_URL}QuantitéFabrication/Foreuse`);
-        if (!quantiteResponse.ok) {
-            throw new Error(`Erreur API lors de la vérification de la quantité de foreuses après placement: ${quantiteResponse.status}`);
-        }
-        const nouvelleQuantiteForeuses = parseInt(await quantiteResponse.text(), 10);
-        console.log("Nouvelle quantité de foreuses après tentative de placement :", nouvelleQuantiteForeuses);
-
-        if (nouvelleQuantiteForeuses > 0) {
-            console.log("Foreuse placée avec succès !");
-            foreuseBtn.textContent = 'Foreuse placée (Rafraîchir)';
-            foreuseBtn.onclick = manuallyUseForeuse;
-            foreuseBtn.disabled = false;
-            reloadInventaire();
-            affichageEnergie();
-        } else {
-            throw new Error("L'API de placement a répondu OK, mais le nombre de foreuses n'a pas augmenté. Vérifiez les conditions côté serveur.");
-        }
-    } catch (error) {
-        console.error("Échec du placement de la foreuse :", error.message);
-        alert("Impossible de placer la foreuse : " + error.message);
-        foreuseBtn.disabled = false;
-        foreuseBtn.textContent = originalText;
-        reloadInventaire();
-        affichageEnergie();
-    }
+function refreshAllData() {
+    manuallyUseScierie();
+    reloadInventaire();  // Appelle la fonction pour rafraîchir l'inventaire
+    affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
+    console.log("Données rafraîchies via le bouton d'actualisation.");
 }
-
-// ==============================================================================
-// Fonction manuelle pour utiliser la foreuse
-// ==============================================================================
-async function manuallyUseForeuse() {
-    const foreuseBtn = document.getElementById('ajouterForeuse');
-    if (!foreuseBtn) {
-        console.error("Bouton 'ajouterForeuse' introuvable.");
-        return;
-    }
-
-    foreuseBtn.disabled = true;
-    const originalText = foreuseBtn.textContent;
-
-    try {
-        await performForeuseOperation();
-
-        foreuseBtn.textContent = originalText;
-        foreuseBtn.disabled = false;
-        console.log("Foreuse utilisée manuellement (stock rafraîchi).");
-    } catch (error) {
-        console.error("Échec de l'utilisation manuelle de la foreuse :", error.message);
-        alert("Impossible d'utiliser la foreuse : " + error.message);
-        foreuseBtn.textContent = originalText;
-        foreuseBtn.disabled = false;
-    }
-}
-
-// ==============================================================================
-// Exécute l'opération de la foreuse
-// ==============================================================================
-async function performForeuseOperation() {
-    try {
-        const response = await fetch(`${API_BASE_URL}utiliserForeuse/T1`, {
-            method: 'GET'
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Erreur API lors de l'utilisation de la foreuse: ${response.status} - ${errorText}`);
-        }
-
-        const successMessage = await response.text();
-        console.log("Foreuse a tourné :", successMessage);
-    } catch (error) {
-        console.error("Erreur lors de l'opération manuelle de la foreuse :", error);
-        throw error;
-    }
-}
-
-
 
 // Fonction pour charger l'API YouTube IFrame Player de manière asynchrone
         function loadYoutubeAPI() {
