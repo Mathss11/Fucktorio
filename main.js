@@ -47,12 +47,10 @@ const ressourcesImages = [
 
 // Variable globale pour le lecteur YouTube
 let ytPlayer;
-let scierieIntervalId = null;
 const workspace = document.getElementById('workspace');
 const svg = document.getElementById('svg-arrows');
 const fenetres = [];
 
-let selectedOutput = null;
 let windowCount = 0;
 const API_BASE_URL = 'http://localhost:8080/API/';
 // =================================================================================================================
