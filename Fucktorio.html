@@ -31,7 +31,7 @@
         <div class="ressource">
             <img src="https://cdn-icons-png.flaticon.com/128/3924/3924877.png" alt="Rocher" class="icon">
             <button onclick="ajouterPierre()">Casser de la pierre</button>
-            <button class="auto-btn" onclick="ajouterPierre()">Casser de la pierre automatiquement</button>
+            <button class="auto-btn" id="ajouterForeuse" onclick="ajouterForeuse()"> Ajouter Foreuse pour 10 de bois et 5 lingot de fer </button>
         </div>
     </div>
 
@@ -80,12 +80,12 @@
     <div id="toolbar">
         <button id="btn-construire">Construire</button>
         <div id="menu-types" class="hidden">
-            <button data-type="Crafteur">Crafteur</button>
-            <button data-type="Four">Four</button>
-            <button data-type="Presse">Presse</button>
-            <button data-type="Raffineur">Raffineur</button>
-            <button data-type="SuperCrafteur">SuperCrafteur</button>
-            <button data-type="MegaCrafteur">MegaCrafteur</button>
+            <button data-type="Crafteur" onclick="PlacerCrafteur()">Crafteur</button>
+            <button data-type="Four" onclick="PlacerFour()">Four</button>
+            <button data-type="Presse" onclick="PlacerPresse()">Presse</button>
+            <button data-type="Raffineur" onclick="PlacerRaffineur()">Raffineur</button>
+            <button data-type="SuperCrafteur" onclick="PlacerSuperCrafteur()">SuperCrafeur</button>
+            <button data-type="MegaCrafteur" onclick="PlacerMegaCrafteur()">MegaCrafteur</button>
         </div>
     </div>
 

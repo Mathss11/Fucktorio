@@ -1,6 +1,8 @@
+const API_BASE_URL = 'http://localhost:8080/API/';
 window.onload = refreshAllData;
-window.onload = initializeScierieButtonState;
-// Liste des noms de ressources
+initializeMachineButtonState("Foreuse");
+initializeMachineButtonState("Scierie");
+
 const ressourcesNoms = [
     "Zinc Brut", "Lingot de Zinc", "Uranium Brut", "Uranium Raffiné", "Déchets Radioactifs", "Plutonium",
     "Or Brut", "Lingot d'Or", "Fil d'Or", "Cables Avancés", "Transformateur", "Batteries", "Bois",
@@ -54,7 +56,6 @@ const fenetres = [];
 
 let selectedOutput = null;
 let windowCount = 0;
-const API_BASE_URL = 'http://localhost:8080/API/';
 // =================================================================================================================
 // Fonctions et variables de l'inventaire, API et YouTube (votre second script)
 // =================================================================================================================
@@ -453,38 +454,41 @@ async function ajouterScierie() {
     }
 }
 
-
-// ==============================================================================
-// Initialise l'état du bouton Scierie au chargement de la page
-// ==============================================================================
-async function initializeScierieButtonState() {
-    const scierieBtn = document.getElementById('ajouterScierie');
-    if (!scierieBtn) {
-        console.error("Bouton 'ajouterScierie' introuvable pour l'initialisation.");
+async function initializeMachineButtonState(type) {
+    const idBouton = `ajouter${type}`;
+    const machineBtn = document.getElementById(idBouton);
+    if (!machineBtn) {
+        console.error(`Bouton '${idBouton}' introuvable pour l'initialisation.`);
         return;
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/Scierie`);
+        const response = await fetch(`${API_BASE_URL}QuantitéFabrication/${type}`);
         if (!response.ok) {
-            throw new Error(`Erreur API lors de la récupération du nombre de scieries: ${response.status}`);
+            throw new Error(`Erreur API lors de la récupération du nombre de ${type.toLowerCase()}s: ${response.status}`);
         }
-        const nombreScieries = parseInt(await response.text(), 10);
-        console.log("Nombre de scieries initial :", nombreScieries);
 
-        if (nombreScieries > 0) {
-            scierieBtn.textContent = 'Scierie placée (Rafraîchir)';
-            scierieBtn.onclick = manuallyUseScierie;
-            scierieBtn.disabled = false;
+        const nombreMachines = parseInt(await response.text(), 10);
+        console.log(`Nombre de ${type.toLowerCase()}s initial :`, nombreMachines);
+
+        if (nombreMachines > 0) {
+            machineBtn.textContent = `${type} placée (Rafraîchir)`;
+            machineBtn.onclick = type === "Foreuse" ? manuallyUseForeuse : manuallyUseScierie;
         } else {
-            scierieBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
-            scierieBtn.onclick = ajouterScierie;
-            scierieBtn.disabled = false;
+            if (type === "Foreuse") {
+                machineBtn.textContent = 'Ajouter Foreuse pour 15 bois et 10 lingots de fer';
+                machineBtn.onclick = ajouterForeuse;
+            } else if (type === "Scierie") {
+                machineBtn.textContent = 'Ajouter Scierie pour 10 de bois et 5 lingot de fer';
+                machineBtn.onclick = ajouterScierie;
+            }
         }
+
+        machineBtn.disabled = false;
     } catch (error) {
-        console.error("Erreur lors de l'initialisation de l'état du bouton scierie :", error);
-        scierieBtn.textContent = 'Scierie Indispo (Erreur)';
-        scierieBtn.disabled = true;
+        console.error(`Erreur lors de l'initialisation du bouton ${type.toLowerCase()} :`, error);
+        machineBtn.textContent = `${type} Indispo (Erreur)`;
+        machineBtn.disabled = true;
     }
 }
 
@@ -494,6 +498,228 @@ function refreshAllData() {
     affichageEnergie(); // Appelle la fonction pour rafraîchir l'énergie
     console.log("Données rafraîchies via le bouton d'actualisation.");
 }
+
+async function ajouterForeuse() {
+    const foreuseBtn = document.getElementById('ajouterForeuse');
+    if (!foreuseBtn) return;
+
+    if (foreuseBtn.onclick !== ajouterForeuse) {
+        console.log("La foreuse semble déjà placée. Déclenche l'utilisation manuelle au lieu de la placer.");
+        manuallyUseForeuse();
+        return;
+    }
+
+    foreuseBtn.disabled = true;
+    const originalText = foreuseBtn.textContent;
+    foreuseBtn.textContent = 'Placement en cours...';
+
+    try {
+        const placementResponse = await fetch(`${API_BASE_URL}PlacerForeuse`, {
+            method: 'GET'
+        });
+
+        if (!placementResponse.ok) {
+            const errorData = await placementResponse.text();
+            throw new Error(`Erreur API Placement de Foreuse: ${placementResponse.status} - ${errorData}`);
+        }
+
+        const quantiteResponse = await fetch(`${API_BASE_URL}QuantitéFabrication/Foreuse`);
+        if (!quantiteResponse.ok) {
+            throw new Error(`Erreur API lors de la vérification de la quantité de foreuses après placement: ${quantiteResponse.status}`);
+        }
+        const nouvelleQuantiteForeuses = parseInt(await quantiteResponse.text(), 10);
+        console.log("Nouvelle quantité de foreuses après tentative de placement :", nouvelleQuantiteForeuses);
+
+        if (nouvelleQuantiteForeuses > 0) {
+            console.log("Foreuse placée avec succès !");
+            foreuseBtn.textContent = 'Foreuse placée (Rafraîchir)';
+            foreuseBtn.onclick = manuallyUseForeuse;
+            foreuseBtn.disabled = false;
+            reloadInventaire();
+            affichageEnergie();
+        } else {
+            throw new Error("L'API de placement a répondu OK, mais le nombre de foreuses n'a pas augmenté. Vérifiez les conditions côté serveur.");
+        }
+    } catch (error) {
+        console.error("Échec du placement de la foreuse :", error.message);
+        alert("Impossible de placer la foreuse : " + error.message);
+        foreuseBtn.disabled = false;
+        foreuseBtn.textContent = originalText;
+        reloadInventaire();
+        affichageEnergie();
+    }
+}
+
+// ==============================================================================
+// Fonction manuelle pour utiliser la foreuse
+// ==============================================================================
+async function manuallyUseForeuse() {
+    const foreuseBtn = document.getElementById('ajouterForeuse');
+    if (!foreuseBtn) {
+        console.error("Bouton 'ajouterForeuse' introuvable.");
+        return;
+    }
+
+    foreuseBtn.disabled = true;
+    const originalText = foreuseBtn.textContent;
+
+    try {
+        await performForeuseOperation();
+
+        foreuseBtn.textContent = originalText;
+        foreuseBtn.disabled = false;
+        console.log("Foreuse utilisée manuellement (stock rafraîchi).");
+    } catch (error) {
+        console.error("Échec de l'utilisation manuelle de la foreuse :", error.message);
+        alert("Impossible d'utiliser la foreuse : " + error.message);
+        foreuseBtn.textContent = originalText;
+        foreuseBtn.disabled = false;
+    }
+}
+
+// ==============================================================================
+// Exécute l'opération de la foreuse
+// ==============================================================================
+async function performForeuseOperation() {
+    try {
+        const response = await fetch(`${API_BASE_URL}utiliserForeuse/T1`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur API lors de l'utilisation de la foreuse: ${response.status} - ${errorText}`);
+        }
+
+        const successMessage = await response.text();
+        console.log("Foreuse a tourné :", successMessage);
+        reloadInventaire();
+        affichageEnergie();
+    } catch (error) {
+        console.error("Erreur lors de l'opération manuelle de la foreuse :", error);
+        throw error;
+    }
+}
+async function PlacerCrafteur(Crafteur) {
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerCrafteur`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur lors du placement de Crafteur : ${response.status} - ${errorText}`);
+        }
+
+        const successMessage = await response.text();
+        console.log(`Crafteur placée avec succès :`, successMessage);
+        reloadInventaire();
+    } catch (error) {
+        console.error(`Impossible de placer Crafteur :`, error.message);
+        alert(`Erreur lors du placement de Crafteur : ${error.message}`);
+    }
+}
+
+async function PlacerFour(Four) {
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerFour`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur lors du placement de Four : ${response.status} - ${errorText}`);
+            reloadInventaire();
+        }
+
+        const successMessage = await response.text();
+        console.log(`Four placée avec succès :`, successMessage);
+    } catch (error) {
+        console.error(`Impossible de placer Four :`, error.message);
+        alert(`Erreur lors du placement de Four : ${error.message}`);
+    }
+}
+
+async function PlacerPresse(Presse) {
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerPresse`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur lors du placement de Presse : ${response.status} - ${errorText}`);
+            reloadInventaire();
+        }
+
+        const successMessage = await response.text();
+        console.log(`Presse placée avec succès :`, successMessage);
+    } catch (error) {
+        console.error(`Impossible de placer Presse :`, error.message);
+        alert(`Erreur lors du placement de Presse : ${error.message}`);
+    }
+}
+
+async function PlacerRaffineur(Raffineur) {
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerRaffineur`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur lors du placement de Raffineur : ${response.status} - ${errorText}`);
+            reloadInventaire();
+        }
+
+        const successMessage = await response.text();
+        console.log(`Raffineur placée avec succès :`, successMessage);
+    } catch (error) {
+        console.error(`Impossible de placer Raffineur :`, error.message);
+        alert(`Erreur lors du placement de Raffineur : ${error.message}`);
+    }
+}
+
+async function PlacerSuperCrafteur(SuperCrafteur) {
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerSuperCrafteur`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur lors du placement de SuperCrafteur : ${response.status} - ${errorText}`);
+            reloadInventaire();
+        }
+
+        const successMessage = await response.text();
+        console.log(`SuperCrafteur placée avec succès :`, successMessage);
+    } catch (error) {
+        console.error(`Impossible de placer SuperCrafteur :`, error.message);
+        alert(`Erreur lors du placement de SuperCrafteur : ${error.message}`);
+    }
+}
+
+async function PlacerMegaCrafteur(MegaCrafteur) {
+    try {
+        const response = await fetch(`${API_BASE_URL}PlacerMegaCrafteur`, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erreur lors du placement de MegaCrafteur : ${response.status} - ${errorText}`);
+            reloadInventaire();
+        }
+
+        const successMessage = await response.text();
+        console.log(`MegaCrafteur placée avec succès :`, successMessage);
+    } catch (error) {
+        console.error(`Impossible de placer MegaCrafteur :`, error.message);
+        alert(`Erreur lors du placement de MegaCrafteur : ${error.message}`);
+    }
+}
+
 
 // Fonction pour charger l'API YouTube IFrame Player de manière asynchrone
 function loadYoutubeAPI() {
